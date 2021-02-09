@@ -20,4 +20,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\catalog.data\catalog.data.csproj" />
+    <ProjectReference Include="..\catalog.infra.IoC\catalog.infra.IoC.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using catalog.api.settings;
+using catalog.data.interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace catalog.api.Controllers
     [ApiController]
     public class CatalogController : ControllerBase
     {
+        
         // GET: api/<CatalogController>
         [HttpGet]
         public IEnumerable<string> Get()

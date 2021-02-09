@@ -5,9 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="context\" />
-    <Folder Include="interface\" />
     <Folder Include="repository\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.11.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\catalog.domain\catalog.domain.csproj" />
   </ItemGroup>
 
 </Project>

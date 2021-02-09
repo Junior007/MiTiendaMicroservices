@@ -1,15 +1,13 @@
+using catalog.api.settings;
+using catalog.data.context;
+using catalog.data.interfaces;
+using catalog.infra.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace catalog.api
@@ -34,6 +32,26 @@ namespace catalog.api
             services.AddMvc().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+
+
+            RegisterServices(services);
+
+
+        }
+        //
+        private void RegisterServices(IServiceCollection services)
+        {
+            
+            //Para inyectar las propiedades de la conexión en el contexto
+            services.Configure<CatalogDatabaseSettings>(Configuration.GetSection(nameof(CatalogDatabaseSettings)));
+            services.AddSingleton<ICatalogDatabaseSettings>(
+                sp => sp.GetRequiredService<IOptions<CatalogDatabaseSettings>>().Value);
+            services.AddTransient<ICatalogContext, CatalogContext>();
+
+
+            DependencyContainer.RegisterServices(services);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +63,7 @@ namespace catalog.api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "catalog.api v1"));
             }
-
+            //Configuration.GetConnectionString("BankingDbConnection")
             app.UseHttpsRedirection();
 
             app.UseRouting();
