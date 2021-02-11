@@ -19,6 +19,8 @@ namespace catalog.data.context
             var client = new MongoClient(catalogDatabaseSettings.ConnectionString);
             var database = client.GetDatabase(catalogDatabaseSettings.DatabaseName);
             Products = database.GetCollection< Product>(catalogDatabaseSettings.CollectionName);
+
+            CatalogContextSeed.SeedData(Products);
         }
         public IMongoCollection<Product> Products { get; }
     }
