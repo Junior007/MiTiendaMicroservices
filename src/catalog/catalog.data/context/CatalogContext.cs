@@ -11,7 +11,7 @@ namespace catalog.data.context
 {
     public class CatalogContext : ICatalogContext
     {
-        private readonly ICatalogDatabaseSettings _catalogDatabaseSettings;
+        //private readonly ICatalogDatabaseSettings _catalogDatabaseSettings;
         //private readonly IMongoCollection<Product> _products;
 
         public CatalogContext(ICatalogDatabaseSettings catalogDatabaseSettings)

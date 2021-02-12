@@ -8,15 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace catalog.data.context
+namespace catalog.data.repository
 {
-    class ProductRepository : IProductRepository
+    public class ProductsRepository : IProductsRepository
     {
 
         private readonly ICatalogContext _catalogContext;
 
 
-        public ProductRepository(ICatalogContext catalogContext)
+        public ProductsRepository(ICatalogContext catalogContext)
         {
             _catalogContext = catalogContext??throw new ArgumentNullException(nameof(catalogContext));
         }
@@ -35,8 +35,10 @@ namespace catalog.data.context
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
         }
 
-        public  async Task<Product> GetProduct(string id)
+        public  async Task<Product> Get(string id)
         {
+            
+
             return await _catalogContext.Products.Find(p => p.Id == id).FirstOrDefaultAsync();
         }
 
@@ -57,6 +59,7 @@ namespace catalog.data.context
 
         public async Task<IEnumerable<Product>> GetProducts()
         {
+            
             return await _catalogContext.Products.Find(p=>true).ToListAsync();
         }
 

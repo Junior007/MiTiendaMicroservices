@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="docker-compose.yml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.2" />
@@ -21,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\catalog.data\catalog.data.csproj" />
+    <ProjectReference Include="..\catalog.application\catalog.application.csproj" />
     <ProjectReference Include="..\catalog.infra.IoC\catalog.infra.IoC.csproj" />
   </ItemGroup>
 

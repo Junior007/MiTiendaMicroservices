@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
+
 namespace catalog.api
 {
     public class Startup
@@ -48,6 +49,8 @@ namespace catalog.api
             services.AddSingleton<ICatalogDatabaseSettings>(
                 sp => sp.GetRequiredService<IOptions<CatalogDatabaseSettings>>().Value);
             services.AddTransient<ICatalogContext, CatalogContext>();
+
+
 
 
             DependencyContainer.RegisterServices(services);

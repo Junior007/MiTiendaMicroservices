@@ -11,7 +11,7 @@ namespace catalog.data.context
     class CatalogContextSeed
     {
         internal static void SeedData(IMongoCollection<Product> productCollection)
-        {
+        {//
             bool existProduct = productCollection.Find(p => true).Any();
 
             if (!existProduct)

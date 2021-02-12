@@ -1,11 +1,12 @@
-﻿using catalog.data.context;
+﻿using catalog.application.interfaces;
+using catalog.application.models;
+using catalog.application.services;
 using catalog.data.interfaces;
+using catalog.data.repository;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace catalog.infra.IoC
 {
@@ -13,6 +14,15 @@ namespace catalog.infra.IoC
     {
         public static void RegisterServices(IServiceCollection services)
         {
+  
+
+            services.AddTransient<IProductsRepository, ProductsRepository>();
+            services.AddTransient<IProductsService, ProductsService>();
+            //AutoMapper
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var assembly = assemblies.Where(ass => ass.FullName.Contains("catalog.")).ToArray();
+
+            services.AddAutoMapper(assemblies);
 
         }
     }
