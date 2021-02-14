@@ -20,7 +20,7 @@ namespace catalog.api.Controllers
     {
 
         private readonly IProductsService _productsService;
-        //private readonly ILogger _logger;
+        //private readonly ILogger<CatalogController> _logger;
 
         public CatalogController(IProductsService productsService)/*, ILogger<CatalogController> logger*/
         {
