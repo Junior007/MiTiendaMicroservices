@@ -29,7 +29,8 @@ services:
       - 8081:8081
     depends_on:
       - catalogdb        
-    #environment:
+    environment:
+      ME_CONFIG_MONGODB_SERVER: catalogdb
     #  ME_CONFIG_MONGODB_ADMINUSERNAME: root
     #  ME_CONFIG_MONGODB_ADMINPASSWORD: example
 
