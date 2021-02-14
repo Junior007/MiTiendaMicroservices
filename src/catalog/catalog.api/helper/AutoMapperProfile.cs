@@ -13,6 +13,9 @@ namespace catalog.api.helper
             // OUT
             CreateMap<catalog.domain.model.Product, catalog.application.models.Product>();
 
+            // IN
+            CreateMap<catalog.application.models.Product, catalog.domain.model.Product>();
+
         }
     }
 }

@@ -28,7 +28,8 @@ namespace catalog.data.repository
 
         public async Task<bool> Delete(string id)
         {
-            FilterDefinition<Product> filter = Builders<Product>.Filter.ElemMatch(p => p.Id, id);
+            //FilterDefinition<Product> filter = Builders<Product>.Filter.ElemMatch(p => p.Id, id);
+            FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(m => m.Id, id);
 
             DeleteResult deleteResult = await _catalogContext.Products.DeleteOneAsync(filter);
 
@@ -45,14 +46,15 @@ namespace catalog.data.repository
         public async Task<IEnumerable<Product>> GetProductByCategory(string category)
         {
             //return await _catalogContext.Products.Find(p => p.Category ==category).ToListAsync();
-            FilterDefinition<Product> filter = Builders<Product>.Filter.ElemMatch(p => p.Category, category);
-
+            //FilterDefinition<Product> filter = Builders<Product>.Filter.ElemMatch(p => p.Category, category);
+            FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(p => p.Category, category);
             return await _catalogContext.Products.Find(filter).ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetProductByName(string name)
         {
-            FilterDefinition<Product> filter = Builders<Product>.Filter.ElemMatch(p => p.Name, name);
+            //FilterDefinition<Product> filter = Builders<Product>.Filter.ElemMatch(p => p.Name, name);
+            FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(p => p.Name, name);
 
             return await _catalogContext.Products.Find(filter).ToListAsync();
         }
