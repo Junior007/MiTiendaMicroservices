@@ -20,12 +20,12 @@ namespace catalog.api.Controllers
     {
 
         private readonly IProductsService _productsService;
-        private readonly ILogger _logger;
+        //private readonly ILogger _logger;
 
-        public CatalogController(IProductsService productsService, ILogger logger)
+        public CatalogController(IProductsService productsService)/*, ILogger<CatalogController> logger*/
         {
             _productsService = productsService ?? throw new ArgumentNullException(nameof(productsService));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            //_logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         // GET: api/<CatalogController>
@@ -35,7 +35,7 @@ namespace catalog.api.Controllers
         public async Task<ActionResult> Get()
         {
             var products = await _productsService.Get();
-            if (products == null || products.Count() == 0)
+            if (products == null || products.Any())
             {
                 return NotFound();
             }
@@ -60,7 +60,7 @@ namespace catalog.api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Format("Error in {0}: stack trace{1}", ex.Message, ex.StackTrace));
+                //_logger.LogError(string.Format("Error in {0}: stack trace{1}", ex.Message, ex.StackTrace));
                 return BadRequest();
             }
         }

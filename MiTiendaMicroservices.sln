@@ -7,15 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2A46F6E6-4BB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "catalog", "catalog", "{F6A7BA74-E456-43CC-94E3-DB8C3A81F4C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "catalog.api", "src\catalog\catalog.api\catalog.api.csproj", "{FFD6FAAB-2105-46F3-867D-AA476DC82969}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "catalog.api", "src\catalog\catalog.api\catalog.api.csproj", "{FFD6FAAB-2105-46F3-867D-AA476DC82969}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "catalog.domain", "src\catalog\catalog.domain\catalog.domain.csproj", "{DDBF10C5-221A-4C07-A7DB-656D64FF9DF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "catalog.domain", "src\catalog\catalog.domain\catalog.domain.csproj", "{DDBF10C5-221A-4C07-A7DB-656D64FF9DF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "catalog.data", "src\catalog\catalog.data\catalog.data.csproj", "{88F89D16-85BC-4D81-8A26-C18ACF831F0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "catalog.data", "src\catalog\catalog.data\catalog.data.csproj", "{88F89D16-85BC-4D81-8A26-C18ACF831F0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "catalog.application", "src\catalog\catalog.application\catalog.application.csproj", "{18824671-7F5F-4A0F-8A7C-066DA6ADABAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "catalog.application", "src\catalog\catalog.application\catalog.application.csproj", "{18824671-7F5F-4A0F-8A7C-066DA6ADABAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "catalog.infra.IoC", "src\catalog\catalog.infra.IoC\catalog.infra.IoC.csproj", "{364AAE1C-039F-48D9-86A5-29634D434C4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "catalog.infra.IoC", "src\catalog\catalog.infra.IoC\catalog.infra.IoC.csproj", "{364AAE1C-039F-48D9-86A5-29634D434C4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
