@@ -20,12 +20,12 @@ namespace catalog.api.Controllers
     {
 
         private readonly IProductsService _productsService;
-        //private readonly ILogger<CatalogController> _logger;
+        private readonly ILogger<CatalogController> _logger;
 
-        public CatalogController(IProductsService productsService)/*, ILogger<CatalogController> logger*/
+        public CatalogController(IProductsService productsService, ILogger<CatalogController> logger)
         {
             _productsService = productsService ?? throw new ArgumentNullException(nameof(productsService));
-            //_logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         // GET: api/<CatalogController>
@@ -60,7 +60,7 @@ namespace catalog.api.Controllers
             }
             catch (Exception ex)
             {
-                //_logger.LogError(string.Format("Error in {0}: stack trace{1}", ex.Message, ex.StackTrace));
+                _logger.LogError(string.Format("Error in {0}: stack trace{1}", ex.Message, ex.StackTrace));
                 return BadRequest();
             }
         }
