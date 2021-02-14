@@ -35,7 +35,7 @@ namespace catalog.api.Controllers
         public async Task<ActionResult> Get()
         {
             var products = await _productsService.Get();
-            if (products == null || products.Any())
+            if (products == null || !products.Any())
             {
                 return NotFound();
             }
