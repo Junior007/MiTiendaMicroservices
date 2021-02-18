@@ -28,7 +28,7 @@ services:
         #- CatalogDatabaseSettings.ConnectionString=mongodb://catalogdb:27017
     image: ${DOCKER_REGISTRY-}catalogapi
     ports:
-      - 8000:80
+      - 8080:80
     depends_on:
         - catalogdb
     #volumes:
