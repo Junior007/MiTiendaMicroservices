@@ -20,10 +20,11 @@ namespace catalog.application.services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task Create(Product product)
+        public async Task<Product> Create(Product product)
         {
             var productForCreate = _mapper.Map<domain.model.Product>(product);
-            await _productsRepository.Create(productForCreate);
+            var productCreated = await _productsRepository.Create(productForCreate);
+            return _mapper.Map<Product>(productCreated);
         }
         public async Task<bool> Update(Product product)
         {

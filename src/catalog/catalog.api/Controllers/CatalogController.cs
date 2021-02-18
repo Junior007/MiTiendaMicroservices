@@ -96,11 +96,11 @@ namespace catalog.api.Controllers
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.Created)]
         public async Task<ActionResult<Product>> Post([FromBody] Product product)
         {
-            await _productsService.Create(product);
+            //await _productsService.Create(product);
 
             //return CreatedAtRoute("Get", new { id = product.Id }, product);
-
-            return await _productsService.Get(product.Id);
+            //var prod = await _productsService.Get(product.Id);
+            return Created("", await _productsService.Create(product));
         }
 
         // PUT api/<CatalogController>/5

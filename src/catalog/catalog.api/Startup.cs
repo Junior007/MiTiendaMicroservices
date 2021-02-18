@@ -43,15 +43,12 @@ namespace catalog.api
         //
         private void RegisterServices(IServiceCollection services)
         {
-            
+
             //Para inyectar las propiedades de la conexión en el contexto
             services.Configure<CatalogDatabaseSettings>(Configuration.GetSection(nameof(CatalogDatabaseSettings)));
             services.AddSingleton<ICatalogDatabaseSettings>(
                 sp => sp.GetRequiredService<IOptions<CatalogDatabaseSettings>>().Value);
             services.AddTransient<ICatalogContext, CatalogContext>();
-
-
-
 
             DependencyContainer.RegisterServices(services);
             

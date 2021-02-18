@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+
+  catalogdb:
+    container_name: catalogdb
+    restart: always
+    #volumes:
+        #- ${WEBAPP_STORAGE_HOME}/site:/data/db
+        #- ./data:/data/db
+    ports:
+        - 27017:27017
+
+  mongo-express:
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    depends_on:
+      - catalogdb        
+    environment:
+      ME_CONFIG_MONGODB_SERVER: catalogdb
+
+  catalog.api:
+    container_name: catalogapi
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        #- CatalogDatabaseSettings.ConnectionString=mongodb://catalogdb:27017
+    image: ${DOCKER_REGISTRY-}catalogapi
+    ports:
+      - 8000:80
+    depends_on:
+        - catalogdb
+    #volumes:
+   #  - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+   #  - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    build:
+      context: .
+      dockerfile: src/catalog/catalog.api/Dockerfile

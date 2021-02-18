@@ -21,9 +21,10 @@ namespace catalog.data.repository
             _catalogContext = catalogContext??throw new ArgumentNullException(nameof(catalogContext));
         }
 
-        public async Task Create(Product product)
+        public async Task<Product> Create(Product product)
         {
             await _catalogContext.Products.InsertOneAsync(product);
+            return product;
         }
 
         public async Task<bool> Delete(string id)

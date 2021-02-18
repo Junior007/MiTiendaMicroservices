@@ -38,6 +38,7 @@ services:
     container_name: catalogapi
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - "CatalogDatabaseSettings:ConnectionString=mongodb://catalogdb:27017"      
     image: ${DOCKER_REGISTRY-}catalogapi
     ports:
         - "8000:80"   

@@ -13,7 +13,7 @@ namespace catalog.application.interfaces
         Task<Product> Get(string id);
         Task<IEnumerable<Product>> GetProductByName(string name);
         Task<IEnumerable<Product>> GetProductByCategory(string category);
-        Task Create(Product product);
+        Task<Product> Create(Product product);
         Task<bool> Update(Product product);
         Task<bool> Delete(string id);
     }
