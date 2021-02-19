@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="interface\" />
+    <Folder Include="interfaces\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿using catalog.domain.model;
+﻿using catalog.domain.models;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;

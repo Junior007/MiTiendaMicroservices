@@ -22,13 +22,13 @@ namespace catalog.application.services
 
         public async Task<Product> Create(Product product)
         {
-            var productForCreate = _mapper.Map<domain.model.Product>(product);
+            var productForCreate = _mapper.Map<domain.models.Product>(product);
             var productCreated = await _productsRepository.Create(productForCreate);
             return _mapper.Map<Product>(productCreated);
         }
         public async Task<bool> Update(Product product)
         {
-            var productForUpdate = _mapper.Map<domain.model.Product>(product);
+            var productForUpdate = _mapper.Map<domain.models.Product>(product);
             return await _productsRepository.Update(productForUpdate);
         }
         public async Task<bool> Delete(string id)

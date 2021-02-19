@@ -11,10 +11,10 @@ namespace catalog.api.helper
         public AutoMapperProfiles()
         {
             // OUT
-            CreateMap<catalog.domain.model.Product, catalog.application.models.Product>();
+            CreateMap<catalog.domain.models.Product, catalog.application.models.Product>();
 
             // IN
-            CreateMap<catalog.application.models.Product, catalog.domain.model.Product>();
+            CreateMap<catalog.application.models.Product, catalog.domain.models.Product>();
 
         }
     }

@@ -1,5 +1,5 @@
 ﻿using catalog.data.interfaces;
-using catalog.domain.model;
+using catalog.domain.models;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
