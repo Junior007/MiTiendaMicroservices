@@ -1,3 +1,4 @@
+using basket.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,8 +37,25 @@ namespace basket.api
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-        }
 
+            RegisterServices(services);
+
+        }
+        //
+        private void RegisterServices(IServiceCollection services)
+        {
+
+            //Para inyectar las propiedades de la conexión en el contexto
+            services.AddSingleton<ConnectionMultiplexer>(
+                sp => {
+                    var configuration = ConfigurationOptions.Parse(Configuration.GetConnectionString("Redis"), true);
+                    return ConnectionMultiplexer.Connect(configuration);
+                
+                });
+
+            DependencyContainer.RegisterServices(services);
+
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
