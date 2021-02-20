@@ -1,4 +1,4 @@
-﻿using catalog.data.interfaces;
+﻿using catalog.domain.interfaces;
 using catalog.domain.models;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace catalog.data.repository
+namespace catalog.domain.repository
 {
     public class ProductsRepository : IProductsRepository
     {

@@ -1,6 +1,6 @@
 using catalog.api.settings;
-using catalog.data.context;
-using catalog.data.interfaces;
+using catalog.domain.context;
+using catalog.domain.interfaces;
 using catalog.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

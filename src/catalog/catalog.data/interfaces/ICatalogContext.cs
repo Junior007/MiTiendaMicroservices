@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace catalog.data.interfaces
+namespace catalog.domain.interfaces
 {
     public interface ICatalogContext
     {

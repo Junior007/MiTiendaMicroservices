@@ -8,8 +8,4 @@
     <PackageReference Include="MongoDB.Bson" Version="2.11.6" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="interfaces\" />
-  </ItemGroup>
-
 </Project>

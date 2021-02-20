@@ -1,8 +1,7 @@
-﻿/*using basket.application.interfaces;
-using basket.application.models;
+﻿using basket.application.interfaces;
 using basket.application.services;
-using basket.data.interfaces;
-using basket.data.repository;*/
+using basket.data.repositories;
+using basket.domain.interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -16,8 +15,8 @@ namespace basket.IoC
         {
   
 
-            //services.AddTransient<IBasketsRepository, BasketsRepository>();
-            //services.AddTransient<IBasketsService, BasketsService>();
+            services.AddTransient<IBasketRepository, BasketRepository>();
+            services.AddTransient<IBasketsService, BasketsService>();
             //AutoMapper
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
             var assembly = assemblies.Where(ass => ass.FullName.Contains("basket.")).ToArray();

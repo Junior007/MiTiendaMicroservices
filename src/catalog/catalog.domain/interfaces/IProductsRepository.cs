@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using catalog.domain.models;
 
-namespace catalog.data.interfaces
+namespace catalog.domain.interfaces
 {
     public interface IProductsRepository
     {

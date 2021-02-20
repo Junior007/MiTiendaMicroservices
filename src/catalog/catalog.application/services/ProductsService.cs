@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using catalog.application.interfaces;
 using catalog.application.models;
-using catalog.data.interfaces;
+using catalog.domain.interfaces;
 
 namespace catalog.application.services
 {

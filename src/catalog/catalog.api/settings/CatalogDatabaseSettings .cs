@@ -1,4 +1,4 @@
-﻿using catalog.data.interfaces;
+﻿using catalog.domain.interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
