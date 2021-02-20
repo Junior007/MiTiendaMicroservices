@@ -1,7 +1,7 @@
 using catalog.api.settings;
 using catalog.data.context;
 using catalog.data.interfaces;
-using catalog.infra.IoC;
+using catalog.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
