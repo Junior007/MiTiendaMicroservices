@@ -57,10 +57,6 @@ namespace basket.api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "basket.api v1"));
-
             app.UseRouting();
 
             app.UseAuthorization();
@@ -69,6 +65,10 @@ namespace basket.api
             {
                 endpoints.MapControllers();
             });
+
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "basket.api v1"));
         }
     }
 }
