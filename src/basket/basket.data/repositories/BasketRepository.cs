@@ -1,9 +1,9 @@
 ﻿using basket.data.interfaces;
 using basket.domain.interfaces;
-using Basket.API.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using basket.domain.models;
 
 namespace basket.data.repositories
 {
@@ -16,7 +16,7 @@ namespace basket.data.repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<BasketCart> GetBasket(string userName)
+        public async Task<BasketCart> Get(string userName)
         {
             var basket = await _context
                                 .Redis
@@ -28,7 +28,7 @@ namespace basket.data.repositories
             return JsonConvert.DeserializeObject<BasketCart>(basket);
         }
 
-        public async Task<BasketCart> UpdateBasket(BasketCart basket)
+        public async Task<BasketCart> Update(BasketCart basket)
         {
             var updated = await _context
                               .Redis
@@ -37,10 +37,10 @@ namespace basket.data.repositories
             {                
                 return null;
             }            
-            return await GetBasket(basket.UserName);            
+            return await Get(basket.UserName);            
         }
 
-        public async Task<bool> DeleteBasket(string userName)
+        public async Task<bool> Delete(string userName)
         {
             return await _context
                             .Redis

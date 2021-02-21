@@ -1,47 +1,61 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using basket.application.interfaces;
+using basket.application.models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace basket.api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class BasketController : ControllerBase
     {
-        // GET: api/<BasketController>
+        private readonly ILogger<BasketController> _logger;
+        private readonly IBasketService _basketsService;
+
+        public BasketController(IBasketService basketsService, ILogger<BasketController> logger)
+        {
+
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _basketsService = basketsService ?? throw new ArgumentNullException(nameof(basketsService));
+        }
+
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        [ProducesResponseType(typeof(BasketCart), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<BasketCart>> Get(string userName)
         {
-            return new string[] { "value1", "value2" };
+            BasketCart basket = await _basketsService.Get(userName);
+            return Ok(basket ?? new BasketCart(userName));
         }
 
-        // GET api/<BasketController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<BasketController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [ProducesResponseType(typeof(BasketCart), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<BasketCart>> Update([FromBody] BasketCart basketCar)
         {
+            return Ok(await _basketsService.Update(basketCar));
         }
 
-        // PUT api/<BasketController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpDelete("{userName}")]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Delete(string userName)
         {
+            return Ok(await _basketsService.Delete(userName));
         }
 
-        // DELETE api/<BasketController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [Route("[action]")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Accepted)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
         {
+            await _basketsService.Checkout(basketCheckout);
+            return Accepted();
+
         }
     }
 }
