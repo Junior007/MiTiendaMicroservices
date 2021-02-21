@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\basket.domain\basket.domain.csproj" />
     <ProjectReference Include="..\basket.data\basket.data.csproj" />
   </ItemGroup>
 

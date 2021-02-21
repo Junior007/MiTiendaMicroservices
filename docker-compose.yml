@@ -6,9 +6,6 @@ services:
 
   basketdb:
     image: redis
-     
-  mongo-express:
-    image: mongo-express
 
   catalog.api:
     container_name: catalogapi
@@ -16,3 +13,6 @@ services:
   basket.api:
     container_name: basketapi
  
+    
+  mongo-express:
+    image: mongo-express

@@ -10,6 +10,45 @@ services:
         #- ./data:/data/db
     ports:
         - 27017:27017
+  basketdb:
+    container_name: basketdb
+    restart: always
+    ports:
+        - 6379:6379
+
+  catalog.api:
+    container_name: catalogapi
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - "CatalogDatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
+    image: ${DOCKER_REGISTRY-}catalogapi
+    ports:
+      - 9000:80
+    depends_on:
+        - catalogdb
+    #volumes:
+     #- ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+     #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    build:
+      context: .
+      dockerfile: src/catalog/catalog.api/Dockerfile
+
+  basket.api:
+    container_name: basketapi
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - "ConnectionStrings:Redis=basketdb:6379"
+    image: ${DOCKER_REGISTRY-}basketapi
+    ports:
+      - 7000:80
+    depends_on:
+        - basketdb
+    #volumes:
+     #- ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+     #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    build:
+      context: .
+      dockerfile: src/basket/basket.api/Dockerfile
 
   mongo-express:
     container_name: mongo-express
@@ -20,37 +59,3 @@ services:
       - catalogdb        
     environment:
       ME_CONFIG_MONGODB_SERVER: catalogdb
-
-  catalog.api:
-    container_name: catalogapi
-    environment:
-        - ASPNETCORE_ENVIRONMENT=Development
-        #- CatalogDatabaseSettings.ConnectionString=mongodb://catalogdb:27017
-    image: ${DOCKER_REGISTRY-}catalogapi
-    ports:
-      - 8080:80
-    depends_on:
-        - catalogdb
-    #volumes:
-   #  - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-   #  - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    build:
-      context: .
-      dockerfile: src/catalog/catalog.api/Dockerfile
-
-  basket.api:
-    container_name: basketapi
-    environment:
-        - ASPNETCORE_ENVIRONMENT=Development
-        #- CatalogDatabaseSettings.ConnectionString=mongodb://catalogdb:27017
-    image: ${DOCKER_REGISTRY-}basketapi
-    ports:
-      - 8080:80
-    depends_on:
-        - catalogdb
-    #volumes:
-   #  - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-   #  - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    build:
-      context: .
-      dockerfile: src/catalog/catalog.api/Dockerfile
