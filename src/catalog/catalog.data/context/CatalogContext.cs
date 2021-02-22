@@ -1,4 +1,5 @@
-﻿using catalog.domain.interfaces;
+﻿using catalog.data.interfaces;
+using catalog.domain.interfaces;
 using catalog.domain.models;
 using MongoDB.Driver;
 using System;
@@ -9,7 +10,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace catalog.domain.context
+namespace catalog.data.context
 {
     public class CatalogContext : ICatalogContext
     {

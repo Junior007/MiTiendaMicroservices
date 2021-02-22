@@ -2,7 +2,7 @@
 using catalog.application.models;
 using catalog.application.services;
 using catalog.domain.interfaces;
-using catalog.domain.repository;
+using catalog.data.repository;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;

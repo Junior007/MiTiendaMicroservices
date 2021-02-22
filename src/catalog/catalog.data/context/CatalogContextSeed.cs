@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace catalog.domain.context
+namespace catalog.data.context
 {
     class CatalogContextSeed
     {
