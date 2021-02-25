@@ -30,6 +30,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "basket.data", "src\basket\b
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "basket.domain", "src\basket\basket.domain\basket.domain.csproj", "{1A5431B2-9FD2-4A21-A5E6-B14C11B28A13}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{11360900-6F19-463C-AB52-3224840F1472}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "infra.eventbus", "src\infra\infra.eventbus\infra.eventbus.csproj", "{7508E927-E07A-47ED-811F-A3A7C84BAA67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +76,10 @@ Global
 		{1A5431B2-9FD2-4A21-A5E6-B14C11B28A13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A5431B2-9FD2-4A21-A5E6-B14C11B28A13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A5431B2-9FD2-4A21-A5E6-B14C11B28A13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7508E927-E07A-47ED-811F-A3A7C84BAA67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7508E927-E07A-47ED-811F-A3A7C84BAA67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7508E927-E07A-47ED-811F-A3A7C84BAA67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7508E927-E07A-47ED-811F-A3A7C84BAA67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +95,8 @@ Global
 		{524AC17B-7447-451F-8F5C-459C416BE812} = {4AF33CD9-D196-4992-AD5F-0FCA0881DA2D}
 		{A31EE685-59C5-4CB0-8F75-56AE6B0CD3A1} = {4AF33CD9-D196-4992-AD5F-0FCA0881DA2D}
 		{1A5431B2-9FD2-4A21-A5E6-B14C11B28A13} = {4AF33CD9-D196-4992-AD5F-0FCA0881DA2D}
+		{11360900-6F19-463C-AB52-3224840F1472} = {2A46F6E6-4BB8-43C6-83EE-7A2D8C0FEFDC}
+		{7508E927-E07A-47ED-811F-A3A7C84BAA67} = {11360900-6F19-463C-AB52-3224840F1472}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6CF6F4DD-9E97-44CD-9830-0CDDA0A539CF}
