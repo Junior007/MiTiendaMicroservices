@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\infra\infra.eventbus\infra.eventbus.csproj" />
     <ProjectReference Include="..\catalog.data\catalog.data.csproj" />
     <ProjectReference Include="..\catalog.domain\catalog.domain.csproj" />
   </ItemGroup>

@@ -12,6 +12,6 @@ namespace basket.application.interfaces
         Task<BasketCart> Get(string userName);
         Task<BasketCart> Update(BasketCart basket);
         Task<bool> Delete(string userName);
-        Task Checkout(BasketCheckout basketCheckout);
+        Task<bool> Checkout(BasketCartCheckout basketCheckout);
     }
 }

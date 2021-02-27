@@ -17,15 +17,15 @@ namespace infra.eventbus.bus
 
     public sealed class RabbitMQBus : IEventBus
     {
-        private readonly IMediator _mediator;
+        //private readonly IMediator _mediator;
         private readonly Dictionary<string, List<Type>> _handlers;
         private readonly List<Type> _eventTypes;
         IServiceScopeFactory _serviceScope;
         private readonly IRabbitMQConnection _connection;
         //
-        public RabbitMQBus(IMediator mediator, IServiceScopeFactory serviceScope, IRabbitMQConnection connection)
+        public RabbitMQBus(/*IMediator mediator,*/ IServiceScopeFactory serviceScope, IRabbitMQConnection connection)
         {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            //_mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _serviceScope = serviceScope ?? throw new ArgumentNullException(nameof(serviceScope));
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
 
@@ -33,10 +33,10 @@ namespace infra.eventbus.bus
             _eventTypes = new List<Type>();
         }
 
-        public Task SendCommand<T>(T command) where T : Command
+        /*public Task SendCommand<T>(T command) where T : Command
         {
             return _mediator.Send(command);
-        }
+        }*/
         //
         public void Publish<T>(T @event) where T : Event
         {

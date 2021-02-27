@@ -2,6 +2,8 @@
 using basket.application.interfaces;
 using basket.application.models;
 using basket.domain.interfaces;
+using infra.eventbus.events;
+using infra.eventbus.interfaces;
 using System;
 using System.Threading.Tasks;
 
@@ -11,52 +13,42 @@ namespace basket.application.services
     {
         private readonly IBasketRepository _basketRepository;
         private readonly IMapper _mapper;
-        public BasketService(IBasketRepository basketRepository, IMapper mapper)
+        private readonly IEventBus _eventBus;
+        public BasketService(IBasketRepository basketRepository, IMapper mapper, IEventBus eventBus)
         {
             this._basketRepository = basketRepository ?? throw new ArgumentNullException(nameof(basketRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
         }
 
-        public Task Checkout(BasketCheckout basketCheckout)
+        public async Task<bool> Checkout(BasketCartCheckout basketCartCheckout)
         {
-            throw new NotImplementedException();
-
             // get total price of the basket
             // remove the basket 
             // send checkout event to rabbitMq 
-            /*
-            var basket = await _repository.GetBasket(basketCheckout.UserName);
+
+            BasketCart basket = _mapper.Map<BasketCart>(await _basketRepository.Get(basketCartCheckout.UserName));
             if (basket == null)
             {
-                _logger.LogError("Basket not exist with this user : {EventId}", basketCheckout.UserName);
-                return BadRequest();
+                throw new Exception(String.Format("Basket not exist with this user : {EventId}", basketCartCheckout.UserName));
             }
 
-            var basketRemoved = await _repository.DeleteBasket(basketCheckout.UserName);
+            var basketRemoved = await _basketRepository.Delete(basketCartCheckout.UserName);
             if (!basketRemoved)
             {
-                _logger.LogError("Basket can not deleted");
-                return BadRequest();
+                throw new Exception(String.Format("Basket can not deleted : {EventId}", basketCartCheckout.UserName));
             }
 
             // Once basket is checkout, sends an integration event to
             // ordering.api to convert basket to order and proceeds with
             // order creation process
 
-            var eventMessage = _mapper.Map<BasketCheckoutEvent>(basketCheckout);
-            eventMessage.RequestId = Guid.NewGuid();
-            eventMessage.TotalPrice = basket.TotalPrice;
+            BasketCartCheckoutEvent basketCartCheckoutEvent = _mapper.Map<BasketCartCheckoutEvent>(basketCartCheckout);
+            basketCartCheckoutEvent.RequestId = Guid.NewGuid();
+            basketCartCheckoutEvent.TotalPrice = basket.TotalPrice;
 
-            try
-            {
-                _eventBus.PublishBasketCheckout(EventBusConstants.BasketCheckoutQueue, eventMessage);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "ERROR Publishing integration event: {EventId} from {AppName}", eventMessage.RequestId, "Basket");
-                throw;
-            }
-            */
+            _eventBus.Publish(basketCartCheckoutEvent);
+            return await Task.FromResult(true);
 
         }
 

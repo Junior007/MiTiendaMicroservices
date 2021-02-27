@@ -49,7 +49,7 @@ namespace basket.IoC
 
                 return new RabbitMQConnection(factory);
             });
-
+            services.AddTransient<IEventBus, RabbitMQBus>();
 
 
             services.AddTransient<IBasketContext, BasketContext>();

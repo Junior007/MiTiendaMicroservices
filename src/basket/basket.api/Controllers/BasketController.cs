@@ -25,7 +25,7 @@ namespace basket.api.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("{userName}")]
         [ProducesResponseType(typeof(BasketCart), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<BasketCart>> Get(string userName)
         {
@@ -33,11 +33,19 @@ namespace basket.api.Controllers
             return Ok(basket ?? new BasketCart(userName));
         }
 
-        [HttpPost]
+        [HttpPut("{userName}")]
         [ProducesResponseType(typeof(BasketCart), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<BasketCart>> Update([FromBody] BasketCart basketCar)
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<BasketCart>> Put([FromBody] BasketCart basketCar, string userName)
         {
-            return Ok(await _basketsService.Update(basketCar));
+            if (userName == basketCar.UserName)
+            {
+                return Ok(await _basketsService.Update(basketCar));
+            }
+            else
+            {
+                return BadRequest("Diferent id");
+            }
         }
 
         [HttpDelete("{userName}")]
@@ -51,10 +59,17 @@ namespace basket.api.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
+        public async Task<ActionResult> Checkout([FromBody] BasketCartCheckout basketCheckout)
         {
-            await _basketsService.Checkout(basketCheckout);
-            return Accepted();
+
+            if (await _basketsService.Checkout(basketCheckout))
+            {
+                return Accepted();
+            }
+            else
+            {
+                return BadRequest("");
+            }
 
         }
     }

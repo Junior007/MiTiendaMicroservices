@@ -1,8 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace basket.IoC
 {
@@ -26,13 +22,17 @@ namespace basket.IoC
             //OUT
             CreateMap<basket.domain.models.BasketCart,     basket.application.models.BasketCart>();
             CreateMap<basket.domain.models.BasketCartItem, basket.application.models.BasketCartItem>();
-            CreateMap<basket.domain.models.BasketCheckout, basket.application.models.BasketCheckout>();
-
+            CreateMap<basket.domain.models.BasketCheckout, basket.application.models.BasketCartCheckout>();
 
             // IN
             CreateMap<basket.application.models.BasketCart, basket.domain.models.BasketCart>();
             CreateMap<basket.application.models.BasketCartItem, basket.domain.models.BasketCartItem>();
-            CreateMap<basket.application.models.BasketCheckout, basket.domain.models.BasketCheckout>();
+            CreateMap<basket.application.models.BasketCartCheckout, application.models.BasketCartCheckout>();
+
+
+            //Event Bus
+            CreateMap<infra.eventbus.events.BasketCartCheckoutEvent, basket.application.models.BasketCartCheckout>().ReverseMap(); ;
+
 
         }
     }

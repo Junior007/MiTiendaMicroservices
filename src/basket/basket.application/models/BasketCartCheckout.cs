@@ -1,6 +1,6 @@
 ﻿namespace basket.application.models
 {
-    public class BasketCheckout
+    public class BasketCartCheckout
     {        
         public string UserName { get; set; }
         public decimal TotalPrice { get; set; }

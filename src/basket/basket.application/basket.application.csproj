@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\infra\infra.eventbus\infra.eventbus.csproj" />
     <ProjectReference Include="..\basket.data\basket.data.csproj" />
     <ProjectReference Include="..\basket.domain\basket.domain.csproj" />
   </ItemGroup>
