@@ -44,7 +44,6 @@ namespace basket.application.services
             // order creation process
 
             BasketCartCheckoutEvent basketCartCheckoutEvent = _mapper.Map<BasketCartCheckoutEvent>(basketCartCheckout);
-            basketCartCheckoutEvent.RequestId = Guid.NewGuid();
             basketCartCheckoutEvent.TotalPrice = basket.TotalPrice;
 
             _eventBus.Publish(basketCartCheckoutEvent);
