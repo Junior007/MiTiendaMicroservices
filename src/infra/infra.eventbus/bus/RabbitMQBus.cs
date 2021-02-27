@@ -1,0 +1,158 @@
+﻿using infra.eventbus.commands;
+using infra.eventbus.events;
+using infra.eventbus.interfaces;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace infra.eventbus.bus
+{
+
+    public sealed class RabbitMQBus : IEventBus
+    {
+        private readonly IMediator _mediator;
+        private readonly Dictionary<string, List<Type>> _handlers;
+        private readonly List<Type> _eventTypes;
+        IServiceScopeFactory _serviceScope;
+        private readonly IRabbitMQConnection _connection;
+        //
+        public RabbitMQBus(IMediator mediator, IServiceScopeFactory serviceScope, IRabbitMQConnection connection)
+        {
+            _mediator = mediator;
+            _serviceScope = serviceScope;
+            _handlers = new Dictionary<string, List<Type>>();
+            _eventTypes = new List<Type>();
+            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
+        }
+
+        public Task SendCommand<T>(T command) where T : Command
+        {
+            return _mediator.Send(command);
+        }
+        //
+        public void Publish<T>(T @event) where T : Event
+        {
+            //var factory = new ConnectionFactory() { HostName = "localhost" };
+            //using (var connection = factory.CreateConnection())
+            {
+                using (var channel = _connection.CreateModel())
+                {
+                    var eventName = @event.GetType().Name;
+                    channel.QueueDeclare(eventName, false, false, false, null);
+
+                    var message = JsonConvert.SerializeObject(@event);
+                    var body = Encoding.UTF8.GetBytes(message);
+
+                    IBasicProperties properties = channel.CreateBasicProperties();
+                    properties.Persistent = true;
+                    properties.DeliveryMode = 2;
+
+                    channel.ConfirmSelect();
+                    channel.BasicPublish("", eventName, null, body);
+                    channel.WaitForConfirmsOrDie();
+
+                    channel.BasicAcks += (sender, eventArgs) =>
+                    {
+                        Console.WriteLine("Sent RabbitMQ");
+                        //implement ack handle
+                    };
+                    channel.ConfirmSelect();
+                }
+            }
+
+        }
+        //
+        public void Subscribe<T, TH>()
+                        where T : Event
+                        where TH : IEventHandler<T>
+        {
+            var eventName = typeof(T).Name;
+            var handlerType = typeof(TH);
+
+            if (!_eventTypes.Contains(typeof(T)))
+            {
+                _eventTypes.Add(typeof(T));
+            }
+
+            if (!_handlers.ContainsKey(eventName))
+            {
+                _handlers.Add(eventName, new List<Type>());
+            }
+
+
+
+            if (_handlers[eventName].Any(s => s.GetType() == handlerType))
+            {
+                throw new ArgumentException($"Handler type {handlerType.Name} is already registered for {eventName}", nameof(handlerType));
+            }
+
+            _handlers[eventName].Add(handlerType);
+
+            StartBasicConsume<T>();
+
+
+        }
+
+        private void StartBasicConsume<T>() where T : Event
+        {
+            var eventName = typeof(T).Name;
+
+            var factory = new ConnectionFactory()
+            {
+                HostName = "localhost",
+                DispatchConsumersAsync = true
+            };
+            var connection = factory.CreateConnection();
+
+            var channel = connection.CreateModel();
+            channel.QueueDeclare(eventName, false, false, false, null);
+
+            var consumer = new AsyncEventingBasicConsumer(channel);
+            consumer.Received += Consumer_Received;
+
+            channel.BasicConsume(eventName, true, consumer);
+        }
+
+        private async Task Consumer_Received(object sender, BasicDeliverEventArgs e)
+        {
+            var eventName = e.RoutingKey;
+            byte[] body = e.Body.ToArray();
+            var message = Encoding.UTF8.GetString(body);
+            try
+            {
+                await ProcessEvent(eventName, message);
+            }
+            catch (Exception) { }
+        }
+
+        private async Task ProcessEvent(string eventName, string message)
+        {
+            if (_handlers.ContainsKey(eventName))
+            {
+                using (var scope = _serviceScope.CreateScope())
+                {
+                    var subscriptions = _handlers[eventName];
+
+                    foreach (var subscription in subscriptions)
+                    {
+                        //var handler = Activator.CreateInstance(subscription);
+                        var handler = scope.ServiceProvider.GetService(subscription);
+                        if (handler == null) continue;
+                        Type eventType = _eventTypes.SingleOrDefault(et => et.Name == eventName);
+                        var @event = JsonConvert.DeserializeObject(message, eventType);
+                        var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
+                        await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { @event });
+                    }
+                }
+            }
+        }
+    }
+}
+
