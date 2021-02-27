@@ -5,16 +5,52 @@ using basket.data.interfaces;
 using basket.data.repositories;
 using basket.domain.interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 using System.Reflection;
+using RabbitMQ.Client;
+using StackExchange.Redis;
+using infra.eventbus.bus;
+using infra.eventbus.interfaces;
+
 
 namespace basket.IoC
 {
     public class DependencyContainer
     {
-        public static void RegisterServices(IServiceCollection services)
+        public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
+
+            //REDIS
+            services.AddSingleton<ConnectionMultiplexer>(
+                sp => {
+                    var redisConfiguration = ConfigurationOptions.Parse(configuration["ConnectionStrings:Redis"], true);
+                    return ConnectionMultiplexer.Connect(redisConfiguration);
+
+                });
+            //MicrorabitMQ
+            services.AddSingleton<IRabbitMQConnection>(sp =>
+            {
+                var factory = new ConnectionFactory()
+                {
+                    HostName = configuration["EventBus:HostName"]
+                };
+
+                if (!string.IsNullOrEmpty(configuration["EventBus:UserName"]))
+                {
+                    factory.UserName = configuration["EventBus:UserName"];
+                }
+
+                if (!string.IsNullOrEmpty(configuration["EventBus:Password"]))
+                {
+                    factory.Password = configuration["EventBus:Password"];
+                }
+
+                return new RabbitMQConnection(factory);
+            });
+
+
 
             services.AddTransient<IBasketContext, BasketContext>();
             services.AddTransient<IBasketRepository, BasketRepository>();

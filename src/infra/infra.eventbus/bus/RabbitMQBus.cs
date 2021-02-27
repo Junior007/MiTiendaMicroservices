@@ -25,11 +25,12 @@ namespace infra.eventbus.bus
         //
         public RabbitMQBus(IMediator mediator, IServiceScopeFactory serviceScope, IRabbitMQConnection connection)
         {
-            _mediator = mediator;
-            _serviceScope = serviceScope;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _serviceScope = serviceScope ?? throw new ArgumentNullException(nameof(serviceScope));
+            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
+
             _handlers = new Dictionary<string, List<Type>>();
             _eventTypes = new List<Type>();
-            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
         }
 
         public Task SendCommand<T>(T command) where T : Command

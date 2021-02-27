@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using StackExchange.Redis;
+
 
 namespace basket.api
 {
@@ -32,22 +32,15 @@ namespace basket.api
             );
 
 
-            RegisterServices(services);
+
+            RegisterServices(services, Configuration);
 
         }
         //
-        private void RegisterServices(IServiceCollection services)
+        private void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
 
-            //Para inyectar las propiedades de la conexión en el contexto
-            services.AddSingleton<ConnectionMultiplexer>(
-                sp => {
-                    var configuration = ConfigurationOptions.Parse(Configuration.GetConnectionString("Redis"), true);
-                    return ConnectionMultiplexer.Connect(configuration);
-                
-                });
-
-            DependencyContainer.RegisterServices(services);
+            DependencyContainer.RegisterServices(services, configuration);
 
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,7 +1,6 @@
-using catalog.api.settings;
 using catalog.data.context;
 using catalog.data.interfaces;
-using catalog.domain.interfaces;
+using catalog.data.models;
 using catalog.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,21 +36,21 @@ namespace catalog.api
 
 
 
-            RegisterServices(services);
+            RegisterServices(services, Configuration);
 
 
         }
         //
-        private void RegisterServices(IServiceCollection services)
+        private void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
-
-            //Para inyectar las propiedades de la conexión en el contexto
+            //TODO
+           //Para inyectar las propiedades de la conexión en el contexto
             services.Configure<CatalogDatabaseSettings>(Configuration.GetSection(nameof(CatalogDatabaseSettings)));
             services.AddSingleton<ICatalogDatabaseSettings>(
                 sp => sp.GetRequiredService<IOptions<CatalogDatabaseSettings>>().Value);
             services.AddTransient<ICatalogContext, CatalogContext>();
 
-            DependencyContainer.RegisterServices(services);
+            DependencyContainer.RegisterServices(services, configuration);
             
         }
 

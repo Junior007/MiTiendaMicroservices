@@ -1,7 +1,5 @@
-﻿using catalog.api.settings;
-using catalog.application.interfaces;
+﻿using catalog.application.interfaces;
 using catalog.application.models;
-using catalog.domain.interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
