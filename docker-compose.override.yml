@@ -45,11 +45,17 @@ services:
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
         - "ConnectionStrings:Redis=basketdb:6379"
+        - "EventBus:HostName=rabbitmq"
     image: ${DOCKER_REGISTRY-}basketapi
     ports:
       - 7000:80
     depends_on:
         - basketdb
+        - rabbitmq
+
+
+
+
     #volumes:
      #- ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
      #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
