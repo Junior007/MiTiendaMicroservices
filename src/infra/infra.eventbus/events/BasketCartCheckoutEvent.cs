@@ -8,7 +8,7 @@ namespace infra.eventbus.events
 {
     public class BasketCartCheckoutEvent:Event
     {
-        public Guid RequestId { get; set; }
+
         public string UserName { get; set; }
         public decimal TotalPrice { get; set; }
 

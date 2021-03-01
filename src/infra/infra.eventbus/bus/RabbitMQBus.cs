@@ -1,4 +1,4 @@
-﻿using infra.eventbus.commands;
+﻿//using infra.eventbus.commands;
 using infra.eventbus.events;
 using infra.eventbus.interfaces;
 using MediatR;
@@ -105,14 +105,14 @@ namespace infra.eventbus.bus
         {
             var eventName = typeof(T).Name;
 
-            var factory = new ConnectionFactory()
+            /*var factory = new ConnectionFactory()
             {
                 HostName = "localhost",
                 DispatchConsumersAsync = true
-            };
-            var connection = factory.CreateConnection();
+            };*/
+            //var connection = factory.CreateConnection();
 
-            var channel = connection.CreateModel();
+            var channel = _connection.CreateModel();
             channel.QueueDeclare(eventName, false, false, false, null);
 
             var consumer = new AsyncEventingBasicConsumer(channel);
