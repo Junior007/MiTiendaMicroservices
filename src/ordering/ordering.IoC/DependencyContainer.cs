@@ -21,7 +21,7 @@ namespace ordering.IoC
         {
             //OrderContext (data base)
             services.AddDbContext<OrderContext>(c =>
-                c.UseSqlServer(configuration["ConnectionStrings:OrderConnection"]), ServiceLifetime.Singleton);
+                c.UseSqlServer(configuration["ConnectionStrings:OrderConnection"],  b => b.MigrationsAssembly("ordering.api")), ServiceLifetime.Singleton);
             //
             //MicrorabitMQ
             services.AddSingleton<IRabbitMQConnection>(sp =>
@@ -48,7 +48,7 @@ namespace ordering.IoC
 
             services.AddTransient<OrderContext, OrderContext>();
             //
-            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IOrdersRepository, OrdersRepository>();
             services.AddTransient<IOrdersService, OrdersService>();
             //AutoMapper
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();

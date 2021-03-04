@@ -13,10 +13,10 @@ namespace ordering.application.events.handlers
 {
     public class BasketCartCheckoutEventHandler : IEventHandler<BasketCartCheckoutEvent>
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrdersRepository _orderRepository;
         private readonly IMapper _mapper;
 
-        public BasketCartCheckoutEventHandler(IOrderRepository orderRepository, IMapper mapper)
+        public BasketCartCheckoutEventHandler(IOrdersRepository orderRepository, IMapper mapper)
         {
             _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
             _mapper=mapper?? throw new ArgumentNullException(nameof(mapper));
@@ -28,7 +28,9 @@ namespace ordering.application.events.handlers
             if (order == null)
                 throw new ApplicationException($"Entity could not be mapped.");
 
-            var newOrder = _mapper.Map<ordering.application.models.Order>(await _orderRepository.Add(order));
+            var newOrder = _mapper.Map<ordering.application.models.Order>(_orderRepository.Add(order));
+
+            await _orderRepository.SaveChanges();
 
             return true;
         }

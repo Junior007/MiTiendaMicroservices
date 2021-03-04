@@ -12,10 +12,10 @@ namespace ordering.application.services
    
     public class OrdersService : IOrdersService
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrdersRepository _orderRepository;
         private readonly IMapper _mapper;
 
-        public OrdersService(IOrderRepository orderRepository, IMapper mapper)
+        public OrdersService(IOrdersRepository orderRepository, IMapper mapper)
         {
             _orderRepository = orderRepository?? throw new ArgumentNullException(nameof(orderRepository)); ;
             _mapper= mapper?? throw new ArgumentNullException(nameof(mapper));

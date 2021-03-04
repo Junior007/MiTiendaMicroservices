@@ -6,6 +6,7 @@ namespace ordering.data.context
     {
         public OrderContext(DbContextOptions<OrderContext> options) : base(options)
         {
+           
         }
 
         public virtual   DbSet<Order> Orders { get; set; }

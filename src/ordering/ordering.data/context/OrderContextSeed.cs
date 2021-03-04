@@ -18,17 +18,18 @@ namespace ordering.data.context
             {
                 // INFO: Run this if using a real database. Used to automaticly migrate docker image of sql server db.
                 orderContext.Database.Migrate();
-                //orderContext.Database.EnsureCreated();
+                orderContext.Database.EnsureCreated();
 
                 if (!orderContext.Orders.Any())
                 {
+                    var orders = GetPreconfiguredOrders();
                     orderContext.Orders.AddRange(GetPreconfiguredOrders());
                     await orderContext.SaveChangesAsync();
                 }
             }
             catch (Exception exception)
             {
-                if (retryForAvailability < 50)
+                if (retryForAvailability < 2)
                 {
                     retryForAvailability++;
                     var log = loggerFactory.CreateLogger<OrderContextSeed>();
@@ -45,7 +46,7 @@ namespace ordering.data.context
             return new List<Order>()
             {
                 new Order() { UserName = "swn", FirstName = "Mehmet", LastName = "Ozkaya", EmailAddress = "meh@ozk.com", AddressLine = "Bahcelievler", TotalPrice = 5239 },
-                new Order() { UserName = "swn", FirstName = "Selim", LastName = "Arslan", EmailAddress ="sel@ars.com", AddressLine = "Ferah", TotalPrice = 3486 }
+                new Order() { UserName = "agg", FirstName = "Selim", LastName = "Arslan", EmailAddress ="sel@ars.com", AddressLine = "Ferah", TotalPrice = 3486 }
             };
         }
     }

@@ -1,12 +1,16 @@
 version: '3.4'
 
 services:
+
   catalogdb:
     image: mongo
 
   basketdb:
     image: redis
 
+  orderdb:
+    image: mcr.microsoft.com/mssql/server
+  
   rabbitmq:
     image: rabbitmq:3-management-alpine
 
@@ -16,6 +20,8 @@ services:
   basket.api:
     container_name: basketapi
  
+  ordering.api:
+    container_name: orderingapi
     
   mongo-express:
     image: mongo-express

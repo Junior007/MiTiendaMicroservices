@@ -1,7 +1,30 @@
-﻿namespace ordering.domain.models
+﻿using System;
+
+namespace ordering.domain.models
 {
-    public class Order 
+    public class Order
     {
+        private string id { get; set; }
+        public Order()
+        {
+            Date = DateTime.Now;
+        }
+
+        public string Id
+        {
+            get
+            {   if (id == null)
+                    id = string.Format("{0}-{1}",Date.ToString("yyyyMMdd hh:mm:ss"), UserName);
+                return id;
+            }
+            set
+            {
+                id = value;
+            }
+
+        }
+        public DateTime Date { get; set; }
+        //
         public string UserName { get; set; }
         public decimal TotalPrice { get; set; }
 

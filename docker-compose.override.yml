@@ -23,6 +23,14 @@ services:
     ports:
         - 6379:6379
 
+  orderdb:
+    container_name: orderdb
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "AGG_123654789"
+      ACCEPT_EULA: "Y"
+
   catalog.api:
     container_name: catalogapi
     environment:
@@ -48,20 +56,35 @@ services:
         - "EventBus:HostName=rabbitmq"
     image: ${DOCKER_REGISTRY-}basketapi
     ports:
-      - 7000:80
+      - 8000:80
     depends_on:
         - basketdb
         - rabbitmq
-
-
-
-
     #volumes:
      #- ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
      #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     build:
       context: .
       dockerfile: src/basket/basket.api/Dockerfile
+
+  ordering.api:
+    container_name: orderingapi
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        #- "ConnectionStrings:Redis=basketdb:6379"
+        - "EventBus:HostName=rabbitmq"
+    image: ${DOCKER_REGISTRY-}orderingapi
+    ports:
+      - 7000:80
+    depends_on:
+        - orderdb
+        - rabbitmq
+    #volumes:
+     #- ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+     #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    build:
+      context: .
+      dockerfile: src/ordering/ordering.api/Dockerfile
 
   mongo-express:
     container_name: mongo-express

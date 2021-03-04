@@ -10,11 +10,11 @@ using System.Linq;
 
 namespace ordering.data.repositories
 {
-    public class OrderRepository : IOrderRepository
+    public class OrdersRepository : IOrdersRepository
     {
 
         private readonly OrderContext _dbContext;
-        public OrderRepository(OrderContext dbContext)
+        public OrdersRepository(OrderContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -29,22 +29,27 @@ namespace ordering.data.repositories
             return await _dbContext.Orders.Where(ord => ord.UserName == userName).ToListAsync();
         }
 
-        public async Task<Order> Add(Order entity)
+        public Order Add(Order entity)
         {
             _dbContext.Orders.Add(entity);
-            await _dbContext.SaveChangesAsync();
+            //await _dbContext.SaveChangesAsync();
             return entity;
         }
 
-        public async Task Update(Order entity)
+        public void Update(Order entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+            //await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Delete(Order entity)
+        public void Delete(Order entity)
         {
             _dbContext.Orders.Remove(entity);
+            //await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task SaveChanges()
+        {
             await _dbContext.SaveChangesAsync();
         }
     }
