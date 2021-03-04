@@ -25,5 +25,16 @@ namespace ordering.application.services
         {
             return _mapper.Map<IEnumerable<Order>>(await _orderRepository.GetByUserName(userName));
         }
+
+        public async Task<bool> CreateOrder(Order order)
+        {
+            var orderForCreate = _mapper.Map<ordering.domain.models.Order>(order);
+
+            _orderRepository.Add(orderForCreate);
+
+            await _orderRepository.SaveChanges();
+
+            return true;
+        }
     }
 }

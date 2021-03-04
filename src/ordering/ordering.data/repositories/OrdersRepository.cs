@@ -16,7 +16,7 @@ namespace ordering.data.repositories
         private readonly OrderContext _dbContext;
         public OrdersRepository(OrderContext dbContext)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext)); ;
         }
 
         public async Task<IReadOnlyList<Order>> Get()
@@ -32,20 +32,17 @@ namespace ordering.data.repositories
         public Order Add(Order entity)
         {
             _dbContext.Orders.Add(entity);
-            //await _dbContext.SaveChangesAsync();
             return entity;
         }
 
         public void Update(Order entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
-            //await _dbContext.SaveChangesAsync();
         }
 
         public void Delete(Order entity)
         {
             _dbContext.Orders.Remove(entity);
-            //await _dbContext.SaveChangesAsync();
         }
 
         public async Task SaveChanges()

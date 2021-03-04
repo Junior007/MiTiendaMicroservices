@@ -22,4 +22,8 @@
     <ProjectReference Include="..\ordering.domain\ordering.domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="interfaces\" />
+  </ItemGroup>
+
 </Project>

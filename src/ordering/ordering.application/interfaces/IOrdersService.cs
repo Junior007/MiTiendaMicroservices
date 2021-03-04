@@ -9,5 +9,6 @@ namespace ordering.application.interfaces
     public interface IOrdersService
     {
         Task<IEnumerable<Order>> GetOrdersByUser(string userName);
+        Task<bool> CreateOrder(Order order);
     }
 }
