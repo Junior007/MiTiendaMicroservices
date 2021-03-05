@@ -13,6 +13,7 @@ namespace ordering.api
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -34,9 +35,8 @@ namespace ordering.api
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-
-
             RegisterServices(services, Configuration);
+
         }
         //
         private void RegisterServices(IServiceCollection services, IConfiguration configuration)

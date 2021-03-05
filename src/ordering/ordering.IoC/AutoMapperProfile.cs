@@ -21,7 +21,7 @@ namespace ordering.IoC
 
 
             //Event Bus
-            //CreateMap<infra.eventbus.events.BasketCartCheckoutEvent, basket.application.models.BasketCartCheckout>().ReverseMap(); ;
+            CreateMap<infra.eventbus.events.BasketCartCheckoutEvent, ordering.application.models.Order>().ReverseMap(); ;
 
         }
     }

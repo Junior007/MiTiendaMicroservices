@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ordering.application.services;
-using ordering.application.interfaces;  
+using ordering.application.interfaces;
 using ordering.data.repositories;
 using ordering.domain.interfaces;
 using System;
@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using infra.eventbus.interfaces;
 using RabbitMQ.Client;
 using infra.eventbus.bus;
+using ordering.application.events.handlers;
 
 namespace ordering.IoC
 {
@@ -21,14 +22,15 @@ namespace ordering.IoC
         {
             //OrderContext (data base)
             services.AddDbContext<OrderContext>(c =>
-                c.UseSqlServer(configuration["ConnectionStrings:OrderConnection"],  b => b.MigrationsAssembly("ordering.api")), ServiceLifetime.Singleton);
+                c.UseSqlServer(configuration["ConnectionStrings:OrderConnection"], b => b.MigrationsAssembly("ordering.api")), ServiceLifetime.Singleton);
             //
             //MicrorabitMQ
             services.AddSingleton<IRabbitMQConnection>(sp =>
             {
                 var factory = new ConnectionFactory()
                 {
-                    HostName = configuration["EventBus:HostName"]
+                    HostName = configuration["EventBus:HostName"],
+                    DispatchConsumersAsync = true
                 };
 
                 if (!string.IsNullOrEmpty(configuration["EventBus:UserName"]))
@@ -43,13 +45,16 @@ namespace ordering.IoC
 
                 return new RabbitMQConnection(factory);
             });
-            services.AddTransient<IEventBus, RabbitMQBus>();
+            services.AddSingleton<IEventBus, RabbitMQBus>();
 
 
             services.AddTransient<OrderContext, OrderContext>();
             //
             services.AddTransient<IOrdersRepository, OrdersRepository>();
             services.AddTransient<IOrdersService, OrdersService>();
+            //EventHandlers
+            services.AddTransient<BasketCartCheckoutEventHandler>();
+
             //AutoMapper
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
             var assembly = assemblies.Where(ass => ass.FullName.Contains("ordering.")).ToArray();

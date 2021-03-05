@@ -34,7 +34,9 @@ namespace basket.IoC
             {
                 var factory = new ConnectionFactory()
                 {
-                    HostName = configuration["EventBus:HostName"]
+                    HostName = configuration["EventBus:HostName"],
+                    DispatchConsumersAsync = true
+
                 };
 
                 if (!string.IsNullOrEmpty(configuration["EventBus:UserName"]))
@@ -49,7 +51,7 @@ namespace basket.IoC
 
                 return new RabbitMQConnection(factory);
             });
-            services.AddTransient<IEventBus, RabbitMQBus>();
+            services.AddSingleton<IEventBus, RabbitMQBus>();
 
 
             services.AddTransient<IBasketContext, BasketContext>();

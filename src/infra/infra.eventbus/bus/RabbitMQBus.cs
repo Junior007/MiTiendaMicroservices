@@ -45,7 +45,15 @@ namespace infra.eventbus.bus
             {
                 using (var channel = _connection.CreateModel())
                 {
+
                     var eventName = @event.GetType().Name;
+                    channel.QueueDeclare(eventName, false, false, false, null);
+
+                    var message = JsonConvert.SerializeObject(@event);
+                    var body = Encoding.UTF8.GetBytes(message);
+                    channel.BasicPublish("", eventName, null, body);
+
+                    /*var eventName = @event.GetType().Name;
                     channel.QueueDeclare(eventName, false, false, false, null);
 
                     var message = JsonConvert.SerializeObject(@event);
@@ -64,7 +72,7 @@ namespace infra.eventbus.bus
                         Console.WriteLine("Sent RabbitMQ");
                         //implement ack handle
                     };
-                    channel.ConfirmSelect();
+                    channel.ConfirmSelect();*/
                 }
             }
 

@@ -27,7 +27,7 @@ namespace basket.IoC
             // IN
             CreateMap<basket.application.models.BasketCart, basket.domain.models.BasketCart>();
             CreateMap<basket.application.models.BasketCartItem, basket.domain.models.BasketCartItem>();
-            CreateMap<basket.application.models.BasketCartCheckout, application.models.BasketCartCheckout>();
+            CreateMap<basket.application.models.BasketCartCheckout, basket.domain.models.BasketCheckout>();
 
 
             //Event Bus
