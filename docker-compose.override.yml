@@ -33,12 +33,13 @@ services:
 
   catalog.api:
     container_name: catalogapi
+    restart: on-failure
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
         - "CatalogDatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
     image: ${DOCKER_REGISTRY-}catalogapi
     ports:
-      - 9000:80
+      - 8010:80
     depends_on:
         - catalogdb
     #volumes:
@@ -50,13 +51,14 @@ services:
 
   basket.api:
     container_name: basketapi
+    restart: on-failure
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
         - "ConnectionStrings:Redis=basketdb:6379"
         - "EventBus:HostName=rabbitmq"
     image: ${DOCKER_REGISTRY-}basketapi
     ports:
-      - 8000:80
+      - 8020:80
     depends_on:
         - basketdb
         - rabbitmq
@@ -69,13 +71,14 @@ services:
 
   ordering.api:
     container_name: orderingapi
+    restart: on-failure
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
         #- "ConnectionStrings:Redis=basketdb:6379"
         - "EventBus:HostName=rabbitmq"
     image: ${DOCKER_REGISTRY-}orderingapi
     ports:
-      - 7000:80
+      - 8030:80
     depends_on:
         - orderdb
         - rabbitmq
@@ -85,6 +88,25 @@ services:
     build:
       context: .
       dockerfile: src/ordering/ordering.api/Dockerfile
+
+  gateway.api:
+    container_name: gatewayapi
+    restart: on-failure
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+    image: ${DOCKER_REGISTRY-}gatewayapi
+    ports:
+      - 8040:80
+    depends_on:
+      - catalog.api
+      - basket.api
+      - ordering.api
+    #volumes:
+     #- ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+     #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    build:
+      context: .
+      dockerfile: src/gateway/gateway.api/Dockerfile
 
   mongo-express:
     container_name: mongo-express
