@@ -11,7 +11,7 @@
         }
       ],
       "UpstreamPathTemplate": "/Catalog",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
+      "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
       "DownstreamPathTemplate": "/api/v1/Catalog/{id}",
@@ -23,10 +23,22 @@
         }
       ],
       "UpstreamPathTemplate": "/Catalog/{id}",
-      "UpstreamHttpMethod": [ "GET", "DELETE" ]
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT" ]
     },
     {
-      "DownstreamPathTemplate": "/api/v1/Catalog/GetProductByCategory/{category}",
+      "DownstreamPathTemplate": "/api/v1/Catalog/GetByName/{name}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalogapi",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/Catalog/GetByName/{name}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Catalog/GetByCategory/{category}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -39,18 +51,6 @@
     },
     //Basket API
     {
-      "DownstreamPathTemplate": "/api/v1/Basket",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "basketapi",
-          "Port": "80"
-        }
-      ],
-      "UpstreamPathTemplate": "/Basket",
-      "UpstreamHttpMethod": [ "GET", "POST" ]
-    },
-    {
       "DownstreamPathTemplate": "/api/v1/Basket/{userName}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -60,7 +60,7 @@
         }
       ],
       "UpstreamPathTemplate": "/Basket/{userName}",
-      "UpstreamHttpMethod": [ "DELETE" ]
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT" ]
     },
     {
       "DownstreamPathTemplate": "/api/v1/Basket/Checkout",
@@ -76,7 +76,7 @@
     },
     //Order API
     {
-      "DownstreamPathTemplate": "/api/v1/Order",
+      "DownstreamPathTemplate": "/api/v1/Order/{userName}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -84,7 +84,7 @@
           "Port": "80"
         }
       ],
-      "UpstreamPathTemplate": "/Order",
+      "UpstreamPathTemplate": "/Order/{userName}",
       "UpstreamHttpMethod": [ "GET" ]
     }
   ]
