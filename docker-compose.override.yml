@@ -108,6 +108,26 @@ services:
       context: .
       dockerfile: src/gateway/gateway.api/Dockerfile
 
+  web:
+    container_name: web
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ApiSettings:BaseAddress=apigateway"
+    depends_on:
+      - catalog.api
+      - basket.api
+      - ordering.api
+      - gateway.api
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    ports:
+      - "8050:80"
+    build:
+      context: .
+      dockerfile: src/web/Dockerfile
+
+  #for testing purpose
   mongo-express:
     container_name: mongo-express
     restart: always
@@ -117,3 +137,5 @@ services:
       - catalogdb        
     environment:
       ME_CONFIG_MONGODB_SERVER: catalogdb
+
+
