@@ -63,6 +63,30 @@
       "UpstreamHttpMethod": [ "GET", "DELETE", "PUT" ]
     },
     {
+      "DownstreamPathTemplate": "/api/v1/Basket/AddItem/{userName}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "basketapi",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/Basket/AddItem/{userName}",
+      "UpstreamHttpMethod": [ "PUT" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Basket/RemoveItem/{userName}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "basketapi",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/Basket/RemoveItem/{userName}",
+      "UpstreamHttpMethod": [ "PUT" ]
+    },
+    {
       "DownstreamPathTemplate": "/api/v1/Basket/Checkout",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [

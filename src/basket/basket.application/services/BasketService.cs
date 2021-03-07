@@ -61,12 +61,49 @@ namespace basket.application.services
             return _mapper.Map<BasketCart>(await _basketRepository.Get(userName));
         }
 
-        public async Task<BasketCart> Update(BasketCart basket)
+        
+        public async Task<BasketCart> AddItem(string userName, BasketCartItem item)
+        {
+
+            var basketForUpdate = await _basketRepository.Get(userName);
+            var basketCartItemForUpdate = _mapper.Map<basket.domain.models.BasketCartItem>(item);
+
+            basketForUpdate.AddItem(basketCartItemForUpdate);
+
+
+            return _mapper.Map<BasketCart>(await _basketRepository.Update(basketForUpdate));
+
+        }
+
+        public async Task<BasketCart> RemoveItem(string userName, BasketCartItem item)
+        {
+
+            var basketForUpdate = await _basketRepository.Get(userName);
+            var basketCartItemForRemove = _mapper.Map<basket.domain.models.BasketCartItem>(item);
+
+            basketForUpdate.RemoveItem(basketCartItemForRemove);
+
+            return _mapper.Map<BasketCart>(await _basketRepository.Update(basketForUpdate));
+
+        }
+
+        public Task<BasketCart> AddItem(string userName, BasketCart basketCar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<BasketCart> RemoveItem(string userName, BasketCart basketCar)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*public async Task<BasketCart> Update(BasketCart basket)
         {
             var basketForUpdate = _mapper.Map<basket.domain.models.BasketCart>(basket);
             return _mapper.Map<BasketCart>(await _basketRepository.Update(basketForUpdate));
 
-        }
+        }*/
+
 
     }
 }

@@ -53,16 +53,16 @@ namespace web
             var userName = "swn";
             var basket = await _basketApi.GetBasket(userName);
 
-            basket.Items.Add(new BasketItemModel
+            var basketItemModel = new BasketItemModel
             {
                 ProductId = productId,
                 ProductName = product.Name,
                 Price = product.Price,
                 Quantity = 1,
                 Color = "Black"
-            });
+            };
 
-            var basketUpdated = await _basketApi.UpdateBasket(basket);
+            var basketUpdated = await _basketApi.AddItem(basketItemModel, userName);
 
             return RedirectToPage("Cart");
         }

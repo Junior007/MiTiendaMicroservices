@@ -33,9 +33,11 @@ namespace web
             var basket = await _basketApi.GetBasket(userName);
 
             var item = basket.Items.FirstOrDefault(x => x.ProductId == productId);
-            basket.Items.Remove(item);
+            //basket.Items.Remove(item);
 
-            var basketUpdated = await _basketApi.UpdateBasket(basket);
+            //var basketUpdated = await _basketApi.UpdateBasket(basket);
+
+            var basketUpdated = await _basketApi.RemoveItem(item, userName);
 
             return RedirectToPage();
         }

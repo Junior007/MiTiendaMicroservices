@@ -57,5 +57,33 @@ namespace web.ApiCollection
 
             await SendRequest<BasketCheckoutModel>(message);
         }
+
+        public async  Task<BasketModel> AddItem(BasketItemModel basketItemModel, string userName)
+        {
+            var message = new HttpRequestBuilder(_settings.BaseAddress)
+                                .SetPath(_settings.BasketPath)
+                                .AddToPath(string.Format("AddItem/{0}", userName))
+                                .HttpMethod(HttpMethod.Put)
+                                .GetHttpMessage();
+
+            var json = JsonConvert.SerializeObject(basketItemModel);
+            message.Content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            return await SendRequest<BasketModel>(message);
+        }
+
+        public async Task<BasketModel> RemoveItem(BasketItemModel basketItemModel, string userName)
+        {
+            var message = new HttpRequestBuilder(_settings.BaseAddress)
+                                .SetPath(_settings.BasketPath)
+                                .AddToPath(string.Format("RemoveItem/{0}", userName))
+                                .HttpMethod(HttpMethod.Put)
+                                .GetHttpMessage();
+
+            var json = JsonConvert.SerializeObject(basketItemModel);
+            message.Content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            return await SendRequest<BasketModel>(message);
+        }
     }
 }

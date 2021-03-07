@@ -32,7 +32,7 @@ namespace basket.api.Controllers
             BasketCart basket = await _basketsService.Get(userName);
             return Ok(basket ?? new BasketCart(userName));
         }
-
+        /*
         [HttpPut("{userName}")]
         [ProducesResponseType(typeof(BasketCart), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.BadRequest)]
@@ -46,6 +46,37 @@ namespace basket.api.Controllers
             {
                 return BadRequest("Diferent id");
             }
+        }
+        */
+
+        [HttpPut("AddItem/{userName}")]
+        [ProducesResponseType(typeof(BasketCart), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<BasketCart>> AddItem(string userName, [FromBody] BasketCartItem basketCar)
+        {
+            //if (userName == basketCar.UserName)
+            {
+                return Ok(await _basketsService.AddItem(userName, basketCar ));
+            }
+            /*else
+            {
+                return BadRequest("Diferent id");
+            }*/
+        }
+
+        [HttpPut("RemoveItem/{userName}")]
+        [ProducesResponseType(typeof(BasketCart), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<BasketCart>> RemoveItem(string userName, [FromBody] BasketCartItem basketCar)
+        {
+            //if (userName == basketCar.UserName)
+            {
+                return Ok(await _basketsService.RemoveItem(userName, basketCar));
+            }
+            /*else
+            {
+                return BadRequest("Diferent id");
+            }*/
         }
 
         [HttpDelete("{userName}")]

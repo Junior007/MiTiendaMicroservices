@@ -32,19 +32,31 @@ namespace web.Pages
             var product = await _catalogApi.GetCatalog(productId);
 
             var userName = "swn";
-            var basket = await _basketApi.GetBasket(userName);
+            /*var basket = await _basketApi.GetBasket(userName);
 
             basket.Items.Add(new BasketItemModel
             {
                 ProductId = productId,
                 ProductName = product.Name,
                 Price = product.Price,
-                Quantity = 1,
-                Color = "Black"
+                Quantity = Quantity,
+                Color = Color
             });
 
-            var basketUpdated = await _basketApi.UpdateBasket(basket);
-            
+            var basketUpdated = await _basketApi.UpdateBasket(basket);*/
+
+
+            var basketItemModel = new BasketItemModel
+            {
+                ProductId = productId,
+                ProductName = product.Name,
+                Price = product.Price,
+                Quantity = 1,
+                Color = "Red"
+            };
+
+            var basketUpdated = await _basketApi.AddItem(basketItemModel, userName);
+
             return RedirectToPage("Cart");
         }
     }

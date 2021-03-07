@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace basket.domain.models
 {
     public class BasketCart
     {        
         public string UserName { get; set; }
-        public List<BasketCartItem> Items { get; set; } = new List<BasketCartItem>();
+        public List<BasketCartItem> Items { get; protected set; } = new List<BasketCartItem>();
 
         public BasketCart()
         {
@@ -15,7 +16,21 @@ namespace basket.domain.models
         {
             UserName = userName;
         }
+        public void AddItem(BasketCartItem item)
+        {
+            var itemFromBasket = Items.Where(it => it.ProductId == item.ProductId).FirstOrDefault();
+            if (itemFromBasket!=null)
+                Items.Where(it => it.ProductId == item.ProductId).FirstOrDefault().Quantity += item.Quantity;
+            else
+                Items.Add(item);
+        }
+        public void RemoveItem(BasketCartItem item)
+        {
+            var itemFromBasket = Items.Where(it => it.ProductId == item.ProductId).FirstOrDefault();
+            if (itemFromBasket != null)
+                Items.Remove(itemFromBasket);
 
+        }
         public decimal TotalPrice
         {
             get
