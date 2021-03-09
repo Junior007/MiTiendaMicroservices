@@ -66,6 +66,11 @@ namespace basket.application.services
         {
 
             var basketForUpdate = await _basketRepository.Get(userName);
+            
+            if (basketForUpdate == null) {
+                basketForUpdate = new domain.models.BasketCart {UserName=userName };
+            }
+
             var basketCartItemForUpdate = _mapper.Map<basket.domain.models.BasketCartItem>(item);
 
             basketForUpdate.AddItem(basketCartItemForUpdate);
@@ -86,24 +91,6 @@ namespace basket.application.services
             return _mapper.Map<BasketCart>(await _basketRepository.Update(basketForUpdate));
 
         }
-
-        public Task<BasketCart> AddItem(string userName, BasketCart basketCar)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<BasketCart> RemoveItem(string userName, BasketCart basketCar)
-        {
-            throw new NotImplementedException();
-        }
-
-        /*public async Task<BasketCart> Update(BasketCart basket)
-        {
-            var basketForUpdate = _mapper.Map<basket.domain.models.BasketCart>(basket);
-            return _mapper.Map<BasketCart>(await _basketRepository.Update(basketForUpdate));
-
-        }*/
-
 
     }
 }
