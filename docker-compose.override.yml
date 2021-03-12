@@ -108,6 +108,25 @@ services:
       context: .
       dockerfile: src/gateway/gateway.api/Dockerfile
 
+  identity.api:
+    container_name: identityapi
+    restart: on-failure
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+    image: ${DOCKER_REGISTRY-}identityapi
+    ports:
+      - 8060:80
+    depends_on:
+      - catalog.api
+      - basket.api
+      - ordering.api
+    #volumes:
+     #- ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+     #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    build:
+      context: .
+      dockerfile: src/identity/identity.api/Dockerfile
+
   web:
     container_name: web
     environment:
