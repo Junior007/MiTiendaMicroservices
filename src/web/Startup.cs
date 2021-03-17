@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -5,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +16,7 @@ using System.Threading.Tasks;
 using web.ApiCollection;
 using web.ApiCollection.Interfaces;
 using web.Settings;
-
+using IdentityModel;
 namespace web
 {
     public class Startup
@@ -40,6 +44,46 @@ namespace web
             services.AddTransient<IOrderApi, OrderApi>();
 
             services.AddRazorPages();
+            //OpenId
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+             {
+                 //options.Authority = "https://identityapi";
+                 options.Authority = "http://localhost:8060";
+
+                 options.ClientId = "storeClient1";
+                 options.ClientSecret = "una palabra secreta";
+                 options.ResponseType = "code id_token";
+
+                 //options.Scope.Add("openid");
+                 //options.Scope.Add("profile");
+                 options.Scope.Add("address");
+                 options.Scope.Add("email");
+                 options.Scope.Add("roles");
+
+                 options.ClaimActions.DeleteClaim("sid");
+                 options.ClaimActions.DeleteClaim("idp");
+                 options.ClaimActions.DeleteClaim("s_hash");
+                 options.ClaimActions.DeleteClaim("auth_time");
+                 options.ClaimActions.MapUniqueJsonKey("role", "role");
+                 //TODO
+                 options.Scope.Add("catalogapi");
+
+                 options.SaveTokens = true;
+                 options.GetClaimsFromUserInfoEndpoint = true;
+
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     NameClaimType = JwtClaimTypes.GivenName,
+                     RoleClaimType = JwtClaimTypes.Role
+                 };
+                 options.RequireHttpsMetadata = false;
+             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,8 +103,9 @@ namespace web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
 
+            app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

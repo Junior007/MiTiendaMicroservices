@@ -1,1 +1,34 @@
 docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
+
+
+Para que funcione la web con certificado, hay que crear un autocertificado:
+
+dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\mi_auto_certificado.pfx -p LaPassword
+dotnet dev-certs https --trust
+
+
+Y agregar la información en el fichero YAML:
+
+
+  web:
+    container_name: web
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ApiSettings:BaseAddress=apigateway"
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=LaPassword
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/mi_auto_certificado.pfx
+
+    depends_on:
+      - catalog.api
+      - basket.api
+      - ordering.api
+      - gateway.api
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    ports:
+      - "8050:80"
+      - "8055:443" #for https
+    build:
+      context: .
+      dockerfile: src/web/Dockerfile

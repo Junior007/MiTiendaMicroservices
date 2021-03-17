@@ -22,14 +22,15 @@ namespace identity.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
 
             services.AddIdentityServer()
                 .AddInMemoryClients(Config.Clients)
-                //.AddInMemoryIdentityResources(new List<IdentityResource>())
                 //.AddInMemoryApiResources(new List<ApiResource>())
                 .AddInMemoryApiScopes(Config.ApiScopes)
-                //.AddTestUsers(new List<TestUser>())
-                .AddDeveloperSigningCredential();
+                .AddDeveloperSigningCredential()
+                .AddTestUsers(Config.TestUsers)//Para el uso de los usuarios de test
+                .AddInMemoryIdentityResources(new List<IdentityResource>());
 
         }
 
@@ -41,15 +42,17 @@ namespace identity.api
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();
 
+            app.UseStaticFiles();
             app.UseRouting();
-
             app.UseIdentityServer();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello world!"); });
+                //endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello world!"); });
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }

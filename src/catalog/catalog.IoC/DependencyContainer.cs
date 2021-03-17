@@ -26,7 +26,6 @@ namespace catalog.IoC
                 sp => sp.GetRequiredService<IOptions<CatalogDatabaseSettings>>().Value);
             services.AddTransient<ICatalogContext, CatalogContext>();*/
 
-
             //
             services.AddTransient<ICatalogContext, CatalogContext>();
             //

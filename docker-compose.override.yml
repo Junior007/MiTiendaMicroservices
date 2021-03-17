@@ -132,6 +132,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "ApiSettings:BaseAddress=apigateway"
+      - ASPNETCORE_HTTPS_PORT=8055
+      - ASPNETCORE_URLS=https://+;http://+ web
+      #- ASPNETCORE_Kestrel__Certificates__Default__Password=LaPassword
+      #- ASPNETCORE_Kestrel__Certificates__Default__Path=\https\mi_auto_certificado.pfx
     depends_on:
       - catalog.api
       - basket.api
@@ -142,6 +146,7 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     ports:
       - "8050:80"
+      - "8055:443" #for https
     build:
       context: .
       dockerfile: src/web/Dockerfile

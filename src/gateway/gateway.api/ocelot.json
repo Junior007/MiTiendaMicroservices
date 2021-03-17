@@ -1,5 +1,20 @@
 {
   "Routes": [
+    //identity api
+    {
+      "DownstreamPathTemplate": "/connect/token",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identityapi",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/connect/token",
+      "UpstreamHttpMethod": [ "POST" ]
+    }
+    ,
+
     //Catalog API
     {
       "DownstreamPathTemplate": "/api/v1/Catalog",

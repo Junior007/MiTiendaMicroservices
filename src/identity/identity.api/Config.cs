@@ -17,32 +17,33 @@ namespace identity.api
             {
                    new Client
                    {
-                        ClientId = "movieClient",
+                        ClientId = "storeClient1",
                         AllowedGrantTypes = GrantTypes.ClientCredentials,
                         ClientSecrets =
                         {
-                            new Secret("secret".Sha256())
+                            new Secret("una palabra secreta".Sha256())
                         },
-                        AllowedScopes = { "movieAPI" }
+                        AllowedScopes = { "store" }
                    },
                    new Client
                    {
-                       ClientId = "movies_mvc_client",
-                       ClientName = "Movies MVC Web App",
-                       AllowedGrantTypes = GrantTypes.Hybrid,
-                       RequirePkce = false,
+                       ClientId = "frontStoreClient",
+                       ClientName = "Razor Store Web App",
+                       //AllowedGrantTypes = GrantTypes.Hybrid,
+                       AllowedGrantTypes = GrantTypes.Code,
+                       //RequirePkce = false,
                        AllowRememberConsent = false,
                        RedirectUris = new List<string>()
                        {
-                           "https://localhost:5002/signin-oidc"
+                           "https://identityapi/signin-oidc"
                        },
                        PostLogoutRedirectUris = new List<string>()
                        {
-                           "https://localhost:5002/signout-callback-oidc"
+                           "https://identityap/signout-callback-oidc"
                        },
                        ClientSecrets = new List<Secret>
                        {
-                           new Secret("secret".Sha256())
+                           new Secret("una palabra secreta".Sha256())
                        },
                        AllowedScopes = new List<string>
                        {
@@ -50,7 +51,7 @@ namespace identity.api
                            IdentityServerConstants.StandardScopes.Profile,
                            IdentityServerConstants.StandardScopes.Address,
                            IdentityServerConstants.StandardScopes.Email,
-                           "movieAPI",
+                           "store",
                            "roles"
                        }
                    }
@@ -59,7 +60,7 @@ namespace identity.api
         public static IEnumerable<ApiScope> ApiScopes =>
            new ApiScope[]
            {
-               new ApiScope("movieAPI", "Movie API")
+               new ApiScope("store", "Ga mazón")
            };
 
         public static IEnumerable<ApiResource> ApiResources =>
@@ -87,12 +88,12 @@ namespace identity.api
                 new TestUser
                 {
                     SubjectId = "5BE86359-073C-434B-AD2D-A3932222DABE",
-                    Username = "mehmet",
-                    Password = "swn",
+                    Username = "agilgome",
+                    Password = "password",
                     Claims = new List<Claim>
                     {
-                        new Claim(JwtClaimTypes.GivenName, "mehmet"),
-                        new Claim(JwtClaimTypes.FamilyName, "ozkaya")
+                        new Claim(JwtClaimTypes.GivenName, "ángel"),
+                        new Claim(JwtClaimTypes.FamilyName, "gil gómez")
                     }
                 }
             };
