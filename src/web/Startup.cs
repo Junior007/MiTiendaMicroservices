@@ -54,7 +54,8 @@ namespace web
             .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
              {
                  //options.Authority = "https://identityapi";
-                 options.Authority = "http://localhost:8060";
+                
+                options.Authority = "http://localhost:8040"; //via ocelot
 
                  options.ClientId = "storeClient1";
                  options.ClientSecret = "una palabra secreta";

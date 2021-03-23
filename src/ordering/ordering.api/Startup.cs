@@ -1,12 +1,16 @@
+using HealthChecks.UI.Client;
 using infra.eventbus.events;
 using infra.eventbus.interfaces;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ordering.application.events.handlers;
+using ordering.data.context;
 using ordering.IoC;
 
 namespace ordering.api
@@ -31,6 +35,10 @@ namespace ordering.api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ordering.api", Version = "v1" });
             });
+
+
+            services.AddHealthChecks().AddCheck("self", () => HealthCheckResult.Healthy()).AddDbContextCheck<OrderContext>();
+
             services.AddMvc().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
@@ -59,6 +67,11 @@ namespace ordering.api
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/IsRunning",  new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
                 endpoints.MapControllers();
             });
 

@@ -2,11 +2,14 @@ using catalog.data.context;
 using catalog.data.interfaces;
 using catalog.data.models;
 using catalog.IoC;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -33,6 +36,8 @@ namespace catalog.api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "catalog.api", Version = "v1" });
             });
+
+            services.AddHealthChecks().AddCheck("self", ()=>HealthCheckResult.Healthy());
             services.AddMvc().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
@@ -92,7 +97,13 @@ namespace catalog.api
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/IsRunning",   new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
                 endpoints.MapControllers();
+
             });
 
             app.UseSwagger();

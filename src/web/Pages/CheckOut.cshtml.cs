@@ -4,9 +4,11 @@ using web.ApiCollection.Interfaces;
 using web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
 
 namespace web
 {
+    [Authorize]
     public class CheckOutModel : PageModel
     {
         private readonly ICatalogApi _catalogApi;

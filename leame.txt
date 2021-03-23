@@ -1,5 +1,6 @@
 docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
 
+No lo he hecho así:::::::
 
 Para que funcione la web con certificado, hay que crear un autocertificado:
 
