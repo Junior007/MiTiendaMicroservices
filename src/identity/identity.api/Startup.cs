@@ -1,12 +1,17 @@
-using IdentityServer4.Models;
-using IdentityServer4.Test;
+using identity.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace identity.api
 {
@@ -22,15 +27,20 @@ namespace identity.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
 
-            services.AddIdentityServer()
-                .AddInMemoryClients(Config.Clients)
-                //.AddInMemoryApiResources(new List<ApiResource>())
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddDeveloperSigningCredential()
-                .AddTestUsers(Config.TestUsers)//Para el uso de los usuarios de test
-                .AddInMemoryIdentityResources(new List<IdentityResource>());
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "identity.api", Version = "v1" });
+            });
+            RegisterServices(services, Configuration);
+
+        }
+        //
+        private void RegisterServices(IServiceCollection services, IConfiguration configuration)
+        {
+
+            DependencyContainer.RegisterServices(services, configuration);
 
         }
 
@@ -40,19 +50,19 @@ namespace identity.api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "identity.api v1"));
             }
 
+            app.UseHttpsRedirection();
 
-            app.UseStaticFiles();
             app.UseRouting();
-            app.UseIdentityServer();
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello world!"); });
-                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
             });
         }
     }

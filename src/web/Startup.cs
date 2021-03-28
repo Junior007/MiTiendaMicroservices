@@ -55,7 +55,7 @@ namespace web
              {
                  //options.Authority = "https://identityapi";
                 
-                options.Authority = "http://localhost:8040"; //via ocelot
+                options.Authority = "http://localhost:8040/identity"; //via ocelot
 
                  options.ClientId = "storeClient1";
                  options.ClientSecret = "una palabra secreta";

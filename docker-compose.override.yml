@@ -10,12 +10,6 @@ services:
         #- ./data:/data/db
     ports:
         - 27017:27017
-  rabbitmq:
-    container_name: rabbitmq
-    restart: always
-    ports:
-        - "5672:5672"
-        - "15672:15672"
 
   basketdb:
     container_name: basketdb
@@ -23,13 +17,22 @@ services:
     ports:
         - 6379:6379
 
-  orderdb:
-    container_name: orderdb
+  sqlserverdb: #orderdb:identitydb:
+    container_name: sqlserverdb
     ports:
       - "1433:1433"
     environment:
       SA_PASSWORD: "AGG_123654789"
       ACCEPT_EULA: "Y"
+
+
+  #message broker
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+        - "5672:5672"
+        - "15672:15672"
 
   catalog.api:
     container_name: catalogapi
@@ -80,7 +83,7 @@ services:
     ports:
       - 8030:80
     depends_on:
-        - orderdb
+        - sqlserverdb
         - rabbitmq
     #volumes:
      #- ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
@@ -116,10 +119,6 @@ services:
     image: ${DOCKER_REGISTRY-}identityapi
     ports:
       - 8060:80
-    depends_on:
-      - catalog.api
-      - basket.api
-      - ordering.api
     #volumes:
      #- ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
      #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -152,6 +151,7 @@ services:
       dockerfile: src/web/Dockerfile
 
   #for testing purpose
+
   mongo-express:
     container_name: mongo-express
     restart: always

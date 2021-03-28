@@ -8,9 +8,16 @@ services:
   basketdb:
     image: redis
 
-  orderdb:
+#  orderdb:
+#    image: mcr.microsoft.com/mssql/server
+#  
+#  identitydb:
+#    image: mcr.microsoft.com/mssql/server
+
+  sqlserverdb:
     image: mcr.microsoft.com/mssql/server
-  
+
+  #message broker
   rabbitmq:
     image: rabbitmq:3-management-alpine
 
