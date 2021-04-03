@@ -44,47 +44,7 @@ namespace web
             services.AddTransient<IOrderApi, OrderApi>();
 
             services.AddRazorPages();
-            //OpenId
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            })
-            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
-             {
-                 //options.Authority = "https://identityapi";
-                
-                options.Authority = "http://localhost:8040/identity"; //via ocelot
-
-                 options.ClientId = "storeClient1";
-                 options.ClientSecret = "una palabra secreta";
-                 options.ResponseType = "code id_token";
-
-                 //options.Scope.Add("openid");
-                 //options.Scope.Add("profile");
-                 options.Scope.Add("address");
-                 options.Scope.Add("email");
-                 options.Scope.Add("roles");
-
-                 options.ClaimActions.DeleteClaim("sid");
-                 options.ClaimActions.DeleteClaim("idp");
-                 options.ClaimActions.DeleteClaim("s_hash");
-                 options.ClaimActions.DeleteClaim("auth_time");
-                 options.ClaimActions.MapUniqueJsonKey("role", "role");
-                 //TODO
-                 options.Scope.Add("catalogapi");
-
-                 options.SaveTokens = true;
-                 options.GetClaimsFromUserInfoEndpoint = true;
-
-                 options.TokenValidationParameters = new TokenValidationParameters
-                 {
-                     NameClaimType = JwtClaimTypes.GivenName,
-                     RoleClaimType = JwtClaimTypes.Role
-                 };
-                 options.RequireHttpsMetadata = false;
-             });
+ 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,7 +66,7 @@ namespace web
 
 
             app.UseRouting();
-            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

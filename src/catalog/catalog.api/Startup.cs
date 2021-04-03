@@ -2,6 +2,7 @@ using catalog.data.context;
 using catalog.data.interfaces;
 using catalog.data.models;
 using catalog.IoC;
+using HealthChecks.MongoDb;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -14,7 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-
+using System.Text;
 
 namespace catalog.api
 {
@@ -37,25 +38,32 @@ namespace catalog.api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "catalog.api", Version = "v1" });
             });
 
-            services.AddHealthChecks().AddCheck("self", ()=>HealthCheckResult.Healthy());
+            services.AddHealthChecks()
+                .AddCheck("self", ()=>HealthCheckResult.Healthy());
+
+
             services.AddMvc().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer("Bearer", option =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option =>
             {
                 option.RequireHttpsMetadata = false;
-                option.Authority = "http://identityapi";
+                //option.Authority = "http://identityapi";
                 option.TokenValidationParameters = new TokenValidationParameters
                 {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                    ValidateIssuer = false,
                     ValidateAudience = false
                 };
             });
 
+            /*
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "storeClient1", "storeClient2"));
-            });
+                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("nameid"));
+            });*/
 
 
             RegisterServices(services, Configuration);
@@ -97,7 +105,7 @@ namespace catalog.api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecks("/IsRunning",   new HealthCheckOptions()
+                endpoints.MapHealthChecks("/Checking",   new HealthCheckOptions()
                 {
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse

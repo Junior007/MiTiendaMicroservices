@@ -12,19 +12,10 @@ namespace catalog.IoC
         {
 
             // OUT
-            /*CreateMap<User, UserForDetailed>()
-                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(p => p.IsMain).Url))
-                .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculatedAge()));
+            CreateMap<catalog.domain.models.Product, catalog.application.models.Product>();
 
-            CreateMap<User, UserForList>()
-                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(p => p.IsMain).Url))
-                .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculatedAge()));
-
-            CreateMap<Photo, PhotoForDetailed>();
-            CreateMap<Photo, PhotoForReturn>();
             // IN
-            CreateMap<UserForUpdate, User>();
-            CreateMap<PhotoForCreation, Photo>();*/
+            CreateMap<catalog.application.models.Product, catalog.domain.models.Product>();
 
         }
     }

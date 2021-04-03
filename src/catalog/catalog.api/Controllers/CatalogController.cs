@@ -1,5 +1,6 @@
 ﻿using catalog.application.interfaces;
 using catalog.application.models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,6 +15,7 @@ namespace catalog.api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    //[Authorize]
     public class CatalogController : ControllerBase
     {
 

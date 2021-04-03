@@ -36,9 +36,13 @@ namespace ordering.api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ordering.api", Version = "v1" });
             });
 
+            //https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks?view=aspnetcore-3.1
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())  //el propio servicio
+                .AddDbContextCheck<OrderContext>(); //checqueo de la base de datos
 
-            services.AddHealthChecks().AddCheck("self", () => HealthCheckResult.Healthy()).AddDbContextCheck<OrderContext>();
 
+            //services.AddHealthChecksUI();
             services.AddMvc().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
@@ -67,11 +71,12 @@ namespace ordering.api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecks("/IsRunning",  new HealthCheckOptions()
+                endpoints.MapHealthChecks("/Checking", new HealthCheckOptions()
                 {
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
+                //endpoints.MapHealthChecksUI();
                 endpoints.MapControllers();
             });
 

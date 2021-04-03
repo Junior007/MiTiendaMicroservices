@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace web
 {
-    [Authorize]
     public class CheckOutModel : PageModel
     {
         private readonly ICatalogApi _catalogApi;

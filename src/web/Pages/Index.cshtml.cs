@@ -13,8 +13,8 @@ using web.Models;
 namespace web.Pages
 {
 
- 
-        public class IndexModel : PageModel
+
+    public class IndexModel : PageModel
     {
         private readonly ICatalogApi _catalogApi;
         private readonly IBasketApi _basketApi;
@@ -23,7 +23,7 @@ namespace web.Pages
         {
             _catalogApi = catalogApi ?? throw new ArgumentNullException(nameof(catalogApi));
             _basketApi = basketApi ?? throw new ArgumentNullException(nameof(basketApi));
-           
+
         }
 
         public IEnumerable<CatalogModel> ProductList { get; set; } = new List<CatalogModel>();
@@ -31,21 +31,10 @@ namespace web.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             ProductList = await _catalogApi.GetCatalog();
-            await LogTokenAndClaims();
             return Page();
         }
 
-        public async Task LogTokenAndClaims()
-        {
-            var identityToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken);
 
-            Debug.WriteLine($"Identity token: {identityToken}");
-
-            foreach (var claim in User.Claims)
-            {
-                Debug.WriteLine($"Claim type: {claim.Type} - Claim value: {claim.Value}");
-            }
-        }
         public async Task<IActionResult> OnPostAddToCartAsync(string productId)
         {
             var product = await _catalogApi.GetCatalog(productId);
