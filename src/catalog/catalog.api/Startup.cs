@@ -39,8 +39,8 @@ namespace catalog.api
             });
 
             services.AddHealthChecks()
-                .AddCheck<GeneralCheck>("self")
-                .AddCheck<CatalogDBCheck>("CatalogDBCheck");
+                .AddCheck<GeneralCheck>(nameof(GeneralCheck))
+                .AddCheck<CatalogDBCheck>(nameof(CatalogDBCheck));
             //.AddCheck("self", ()=>HealthCheckResult.Healthy());
 
 

@@ -43,7 +43,7 @@ namespace catalog.data.context
         }
         public IMongoCollection<Product> Products { get; }
 
-        public bool Check()
+        public bool IsOpen()
         {
             return Products != null;
         }

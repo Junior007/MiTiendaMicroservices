@@ -18,7 +18,7 @@ namespace catalog.api.health.checks
         }
         public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
         {
-            bool isHealthy = _catalogContext.Check();
+            bool isHealthy = _catalogContext.IsOpen();
 
             return Task.FromResult(HealthCheckResult.Healthy(nameof(CatalogDBCheck)));
         }

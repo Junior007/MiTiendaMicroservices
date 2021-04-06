@@ -32,8 +32,8 @@ namespace basket.api
             });
 
             services.AddHealthChecks()
-                .AddCheck<GeneralCheck>("self")
-                .AddCheck<BasketDBCheck>("CatalogDBCheck");
+                .AddCheck<GeneralCheck>(nameof(GeneralCheck))
+                .AddCheck<BasketDBCheck>(nameof(BasketDBCheck));
 
             services.AddMvc().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

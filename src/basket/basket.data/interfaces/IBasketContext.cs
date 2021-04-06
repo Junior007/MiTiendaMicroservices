@@ -5,7 +5,7 @@ namespace basket.data.interfaces
     public interface IBasketContext
     {
 
-        bool Check();
+        bool IsOpen();
         IDatabase Redis { get; }
 
        
