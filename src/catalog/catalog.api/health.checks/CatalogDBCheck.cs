@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace catalog.api.health.checks
 {
-    public class catalogDB : IHealthCheck
+    public class CatalogDBCheck : IHealthCheck
     {
 
         ICatalogContext _catalogContext;
-        public catalogDB(ICatalogContext catalogContext)
+        public CatalogDBCheck(ICatalogContext catalogContext)
         {
             _catalogContext = catalogContext;
         }
@@ -20,7 +20,7 @@ namespace catalog.api.health.checks
         {
             bool isHealthy = _catalogContext.Check();
 
-            return Task.FromResult(HealthCheckResult.Healthy(nameof(catalogDB)));
+            return Task.FromResult(HealthCheckResult.Healthy(nameof(CatalogDBCheck)));
         }
     }
 }

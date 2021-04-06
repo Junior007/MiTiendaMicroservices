@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 namespace catalog.api.health.checks
 {
 
-    public class general : IHealthCheck
+    public class GeneralCheck : IHealthCheck
     {
         public Task<HealthCheckResult> CheckHealthAsync(
             HealthCheckContext context,
             CancellationToken cancellationToken = new CancellationToken())
         {
 
-            return Task.FromResult(HealthCheckResult.Healthy(nameof(general)));
+            return Task.FromResult(HealthCheckResult.Healthy(nameof(GeneralCheck)));
         }
     }
 }

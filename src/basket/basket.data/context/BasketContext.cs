@@ -14,5 +14,12 @@ namespace basket.data.context
         }        
 
         public IDatabase Redis { get; }
+
+        public bool Check()
+        {
+
+            return _redisConnection.IsConnected;
+
+        }
     }
 }
