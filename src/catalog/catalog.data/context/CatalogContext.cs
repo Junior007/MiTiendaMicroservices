@@ -42,5 +42,10 @@ namespace catalog.data.context
             CatalogContextSeed.SeedData(Products);
         }
         public IMongoCollection<Product> Products { get; }
+
+        public bool Check()
+        {
+            return Products != null;
+        }
     }
 }
