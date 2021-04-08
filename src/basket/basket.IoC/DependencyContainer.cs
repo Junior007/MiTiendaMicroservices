@@ -23,7 +23,7 @@ namespace basket.IoC
         {
 
             //REDIS
-            services.AddSingleton<ConnectionMultiplexer>(
+            services.AddSingleton<IConnectionMultiplexer>(
                 sp => {
                     var redisConfiguration = ConfigurationOptions.Parse(configuration["ConnectionStrings:Redis"], true);
                     return ConnectionMultiplexer.Connect(redisConfiguration);

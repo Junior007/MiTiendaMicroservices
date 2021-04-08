@@ -5,12 +5,13 @@ namespace basket.domain.models
 {
     public class BasketCart
     {        
-        public string UserName { get; set; }
+        public string UserName { get; protected set; }
         public List<BasketCartItem> Items { get; protected set; } = new List<BasketCartItem>();
 
-        public BasketCart()
+        /*public BasketCart(string userName)
         {
-        }
+            UserName = userName;
+        }*/
 
         public BasketCart(string userName)
         {

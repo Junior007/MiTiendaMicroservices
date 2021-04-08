@@ -3,7 +3,6 @@ using catalog.data.context;
 using catalog.data.interfaces;
 using catalog.data.models;
 using catalog.IoC;
-using catalog.api.health.checks;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
