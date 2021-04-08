@@ -10,10 +10,10 @@ namespace basket.data.context
         public BasketContext(IConnectionMultiplexer redisConnection)
         {
             _redisConnection = redisConnection;
-            Redis = redisConnection.GetDatabase();
+            CacheDB = redisConnection.GetDatabase();
         }        
 
-        public IDatabase Redis { get; }
+        public IDatabase CacheDB { get; }
 
         public bool IsOpen()
         {

@@ -6,7 +6,7 @@ namespace basket.data.interfaces
     {
 
         bool IsOpen();
-        IDatabase Redis { get; }
+        IDatabase CacheDB { get; }
 
        
     }

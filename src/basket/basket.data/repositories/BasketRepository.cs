@@ -10,17 +10,25 @@ namespace basket.data.repositories
     public class BasketRepository : IBasketRepository
     {
         private readonly IBasketContext _context;
+        private readonly string _className;
+
+        private string Key(string userName)
+        {
+            return $"{_className}-{userName}";
+
+        }
 
         public BasketRepository(IBasketContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _className = nameof(BasketRepository);
         }
 
         public async Task<BasketCart> Get(string userName)
         {
             var basket = await _context
-                                .Redis
-                                .StringGetAsync(userName);
+                                .CacheDB
+                                .StringGetAsync(Key(userName));
             if (basket.IsNullOrEmpty)
             {
                 return null;
@@ -31,8 +39,8 @@ namespace basket.data.repositories
         public async Task<BasketCart> Update(BasketCart basket)
         {
             var updated = await _context
-                              .Redis
-                              .StringSetAsync(basket.UserName, JsonConvert.SerializeObject(basket));
+                              .CacheDB
+                              .StringSetAsync(Key(basket.UserName), JsonConvert.SerializeObject(basket));
             if (!updated)
             {                
                 return null;
@@ -43,8 +51,8 @@ namespace basket.data.repositories
         public async Task<bool> Delete(string userName)
         {
             return await _context
-                            .Redis
-                            .KeyDeleteAsync(userName);
+                            .CacheDB
+                            .KeyDeleteAsync(Key(userName));
         }
     }
 }

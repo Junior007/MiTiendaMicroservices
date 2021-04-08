@@ -9,7 +9,7 @@ using basket.IoC;
 using infra.eventbus.interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
+using System.Linq;
 
 namespace UnitTesting.application
 {
@@ -36,37 +36,53 @@ namespace UnitTesting.application
 
         }
 
-        [TestMethod]
+        /*[TestMethod]
         public void Get()
         {
             var bk = _basketService.Get("agg");
-        }
+        }*/
         [TestMethod]
-        public void AddSameItem()
+        public async void AddSameItem()
         {
+            string color = "red";
+            decimal price = 123.54M;
+            string productId = "1111";
+            string productName = "item1";
+            int quantity = 7;
+            string userName1 = "agg1";
+            int iter = 3;
+
             BasketCartItem item1 = new BasketCartItem
             {
-                Color = "red",
-                Price = 123.54M,
-                ProductId = "1111",
-                ProductName = "item1",
-                Quantity = 7
+                Color = color,
+                Price = price,
+                ProductId = productId,
+                ProductName = productName,
+                Quantity = quantity
 
 
             };
 
-            var userName1 = "agg1";
-            var userName2 = "agg2";
 
-            _basketService.AddItem(userName1, item1);
-            _basketService.AddItem(userName1, item1);
-            _basketService.AddItem(userName1, item1);
 
-            
-            _basketService.AddItem(userName2, item1);
-            _basketService.AddItem(userName2, item1);
-            _basketService.AddItem(userName2, item1);
-            
+            for (var i = 0; i < iter; i++)
+                _basketService.AddItem(userName1, item1);
+
+
+            var basket = (await _basketService.Get(userName1));
+
+            var item = basket.Items.FirstOrDefault();
+            /*
+            Assert.AreEqual(basket.Items.Count, 1);
+            Assert.AreEqual(basket.TotalPrice, item.Quantity * item.Price);
+
+            Assert.AreEqual(item.Color, color);
+            Assert.AreEqual(item.Price, price);
+            Assert.AreEqual(item.ProductId, productId);
+            Assert.AreEqual(item.ProductName, productName);
+            Assert.AreEqual(item.Quantity, quantity *iter);
+            */
+
         }
         [TestMethod]
         public void RemoveItem()
