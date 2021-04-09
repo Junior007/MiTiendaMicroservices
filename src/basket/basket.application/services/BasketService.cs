@@ -58,6 +58,11 @@ namespace basket.application.services
 
         public async Task<BasketCart> Get(string userName)
         {
+            var basket = await _basketRepository.Get(userName);
+
+            if(basket==null)
+                return new BasketCart(userName);
+
             return _mapper.Map<BasketCart>(await _basketRepository.Get(userName));
         }
 
@@ -68,7 +73,7 @@ namespace basket.application.services
             var basketForUpdate = await _basketRepository.Get(userName);
             
             if (basketForUpdate == null) {
-                basketForUpdate = new domain.models.BasketCart {UserName=userName };
+                basketForUpdate = new domain.models.BasketCart (userName );
             }
 
             var basketCartItemForUpdate = _mapper.Map<basket.domain.models.BasketCartItem>(item);

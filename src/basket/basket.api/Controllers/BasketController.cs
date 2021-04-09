@@ -30,7 +30,7 @@ namespace basket.api.Controllers
         public async Task<ActionResult<BasketCart>> Get(string userName)
         {
             BasketCart basket = await _basketsService.Get(userName);
-            return Ok(basket ?? new BasketCart(userName));
+            return Ok(basket);
         }
         /*
         [HttpPut("{userName}")]
