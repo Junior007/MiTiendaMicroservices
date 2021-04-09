@@ -1,3 +1,4 @@
+using catalog.api.health.checks;
 using HealthChecks.UI.Client;
 using infra.eventbus.events;
 using infra.eventbus.interfaces;
@@ -38,8 +39,9 @@ namespace ordering.api
 
             //https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks?view=aspnetcore-3.1
             services.AddHealthChecks()
-                .AddCheck("self", () => HealthCheckResult.Healthy())  //el propio servicio
-                .AddDbContextCheck<OrderContext>(); //checqueo de la base de datos
+                .AddCheck<GeneralCheck>(nameof(GeneralCheck))
+                .AddCheck<OrderingDBCheck>(nameof(OrderingDBCheck)); //mi chequeo personalizado
+                //.AddDbContextCheck<OrderContext>(); //chequeo de la base de datos
 
 
             //services.AddHealthChecksUI();

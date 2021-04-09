@@ -10,6 +10,9 @@ namespace catalog.data.interfaces
 {
     public interface ICatalogContext
     {
+        bool IsOpen();
+
         IMongoCollection<Product> Products { get; }
+
     }
 }

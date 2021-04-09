@@ -1,5 +1,8 @@
 using basket.IoC;
+using catalog.api.health.checks;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +30,11 @@ namespace basket.api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "basket.api", Version = "v1" });
             });
+
+            services.AddHealthChecks()
+                .AddCheck<GeneralCheck>(nameof(GeneralCheck))
+                .AddCheck<BasketDBCheck>(nameof(BasketDBCheck));
+
             services.AddMvc().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
@@ -56,6 +64,12 @@ namespace basket.api
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/Checking", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+
                 endpoints.MapControllers();
             });
 

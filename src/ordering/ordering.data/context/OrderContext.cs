@@ -1,5 +1,7 @@
 ﻿using ordering.domain.models;
 using Microsoft.EntityFrameworkCore;
+using System;
+
 namespace ordering.data.context
 {
     public class OrderContext : DbContext
@@ -10,5 +12,10 @@ namespace ordering.data.context
         }
 
         public virtual   DbSet<Order> Orders { get; set; }
+
+        public bool IsOpen()
+        {
+            return this.Database.GetDbConnection().State == System.Data.ConnectionState.Open;
+        }
     }
 }

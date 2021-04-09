@@ -1,8 +1,9 @@
+using catalog.api.health.checks;
 using catalog.data.context;
 using catalog.data.interfaces;
 using catalog.data.models;
 using catalog.IoC;
-using HealthChecks.MongoDb;
+using catalog.api.health.checks;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -10,7 +11,6 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -39,7 +39,9 @@ namespace catalog.api
             });
 
             services.AddHealthChecks()
-                .AddCheck("self", ()=>HealthCheckResult.Healthy());
+                .AddCheck<GeneralCheck>(nameof(GeneralCheck))
+                .AddCheck<CatalogDBCheck>(nameof(CatalogDBCheck));
+            //.AddCheck("self", ()=>HealthCheckResult.Healthy());
 
 
             services.AddMvc().AddNewtonsoftJson(options =>
