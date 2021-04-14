@@ -1,0 +1,9 @@
+
+
+https://docs.microsoft.com/es-es/azure/container-registry/container-registry-get-started-azure-cli
+
+az group create --name myProbes --location westeurope
+
+az acr create --resource-group myProbes --name myProbesContainers --sku Basic
+
+az container create --resource-group myProbes --file docker-compose.yml
